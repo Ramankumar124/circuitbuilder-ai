@@ -7,7 +7,7 @@ function SavedProject() {
        <div className="flex justify-between items-center p-4 bg-[#2e2e2e] dark:bg-gray-800">
         <span className="font-bold text-white">My Projects</span>
       
-                      <Avatar sx={{ width: 32, height: 32 }}>D</Avatar>
+        <Avatar sx={{ width: 32, height: 32 }}>D</Avatar>
       </div>
       <div className="bg-white m-auto h-340 w-250 border-2 ml-auto mt-10 rounded-2xl">
         <div className="border-b-2  p-4 ">

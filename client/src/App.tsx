@@ -16,12 +16,11 @@ function App() {
     <Routes>
       <Route path='login' element={<Login />} />
       <Route path='signup' element={<Register />} />
-      <Route path='dashboard' element={<Dashboard />} />
-      <Route path='home' element={<PromptPage />} />
+      <Route path='/' element={<Dashboard />}></Route>
+      <Route path='/prompt' element ={<PromptPage />}></Route>
     </Routes>
 
     </Router>
-<PromptPage />
 
     </>
  

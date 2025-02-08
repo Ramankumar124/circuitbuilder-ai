@@ -1,57 +1,128 @@
+import { useState } from "react";
+import { createCiruit } from "../../apiService/api";
+import toast from "react-hot-toast";
+import { AxiosError } from "axios";
+import { useAppDispatch } from "../../redux/hooks/store";
+import { setCircuit } from "../../redux/features/circuitSlice";
+import { useNavigate } from "react-router-dom";
 
-import Avatar from '@mui/material/Avatar';
-import { useState } from 'react';
+interface CircuitResponse {
+  message: string;
+  data: {
+    circuit_name: string;
+    nodes: any[];
+    edges: any[];
+    explanation: string;
+    suggestions: string[];
+  };
+}
+
 export default function PromptPage() {
-  const [Propmt,setPrompt]=useState("")
+  const [prompt, setPrompt] = useState("");
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-const addTOPrompt=(event)=>{
- 
-  setPrompt(event.currentTarget.textContent)
-}
-const handleChange=(e)=>{
-setPrompt(e.target.value)
-console.log(e.target.value)
-}
+  const addToPrompt = (event: any) => {
+    setPrompt(event.currentTarget.textContent);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPrompt(e.target.value);
+  };
+
+  const handleApi = async () => {
+    if (!prompt.trim()) {
+      toast.error("Prompt cannot be empty!");
+      return;
+    }
+  
+    try {
+      const payload = { prompt };
+  
+      const response = await createCiruit(payload) as { data: CircuitResponse };
+  
+      let rawData = response?.data?.data;
+  
+      // Ensure rawData is a string before calling replace()
+      if (typeof rawData !== "string") {
+        console.error("API returned unexpected format:", rawData);
+        toast.error("Invalid API response format");
+        return;
+      }
+  
+      // **Fix Regex to Remove Markdown Artifacts**
+      const cleanedResponse = rawData.replace(/```json|```/g, "").trim();
+  
+      // **Parse the cleaned JSON string**
+      const parsedData = JSON.parse(cleanedResponse);
+  
+      if (parsedData) {
+        dispatch(
+          setCircuit({
+            node: parsedData?.nodes || null,
+            edge: parsedData?.edges || null,
+            explanation: parsedData.explanation || null,
+            suggestions: parsedData.suggestions || null,
+            circuitName: parsedData.circuit_name || "", // Extract circuit name
+          })
+        );
+        navigate("/dashboard")
+        } else {
+        toast.error("Failed to parse circuit data");
+      }
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        toast.error(error.response?.data?.message || "API error occurred");
+      } else {
+        toast.error("An unexpected error occurred");
+      }
+    }
+  };
+  
+  
+
   return (
-    <div className="bg-black text-white min-h-screen 0 ">
+    <div className="bg-black text-white min-h-screen">
       {/* Navbar */}
-      <div className="flex justify-between items-center p-4 bg-[#1e1e1e] dark:bg-gray-800">
+      <div className="flex justify-between items-center p-4 bg-[#1e1e1e]">
         <span className="font-bold text-white">My Projects</span>
-    
-        <div className="space-x-4">
-          <button className="bg-orange-500 text-black px-4 py-2 rounded-md">Sign up</button>
-          <button className="bg-yellow-400 text-black px-4 py-2 rounded-md">Sign in</button>
-        </div>
       </div>
-      
-      {/* Grid Section */}
 
-      <div className=" gap-2 p-5 ml-0 mt-40" >     <div className="flex ml-2 gap-5">
-  <div  onClick={addTOPrompt} className="ml-2 bg-[#007bff]   text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consist of 10 led  and a battery</div>
-  <div onClick={addTOPrompt} className="ml-2 bg-[#007bff]  text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consist of 10 led  and a battery</div>
-  <div onClick={addTOPrompt} className="ml-2 bg-[#007bff]  text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consist of 10 led  and a battery</div>
-  <div onClick={addTOPrompt} className="ml-2 bg-[#007bff] text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consist of 10 led  and a battery</div>
-  
-     </div>
-     <div className="flex ml-30 mt-9 gap-5 text-center items-center">
-  <div onClick={addTOPrompt} className="ml-2 bg-[#007bff] text-[#fff] dark:bg-gray-600 h-15  rounded-md p-2">Create a circuit which consit of 10 led  and a battery</div>
-  <div onClick={addTOPrompt} className="ml-2 bg-[#007bff] text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consit of 10 led  and a battery</div>
-  <div onClick={addTOPrompt} className="ml-2 bg-[#007bff]  text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consit of 10 led  and a battery</div>
-     </div>
-  
+      {/* Grid Section */}
+      <div className="gap-2 p-5 mt-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+          {["Create a circuit with 10 LEDs and a battery", "Simple resistor circuit", "Basic motor driver", "Light sensor with buzzer"].map(
+            (text, index) => (
+              <div
+                key={index}
+                onClick={addToPrompt}
+                className="bg-[#007bff] text-white p-2 rounded-md cursor-pointer hover:bg-[#0056b3]"
+              >
+                {text}
+              </div>
+            )
+          )}
+        </div>
       </div>
 
       {/* Footer Section */}
-      <div className="p-6 pb-3 ml-20 mt-4 w-350 text-center bg-[#2e2e2e] dark:bg-gray-900  justify-between items-center rounded-md mx-8">
-  <textarea name=""  value={Propmt} onChange={handleChange} id="" className="w-325 border-none border-0 h-10"></textarea>
-         <div className="flex justify-between mt-4  ">
-      
-         <button className="h-9 text-7px ml-5   w-24 bg-white dark:bg-gray-600 rounded-md text-black">Enhance </button>
-         <button className="h-9 mr-5  w-24 bg-white dark:bg-gray-600 rounded-md text-black">Genrate</button>
-         </div>
-     
+      <div className="p-6 pb-3 mt-4 max-w-xl mx-auto bg-[#2e2e2e] rounded-md">
+        <textarea
+          value={prompt}
+          onChange={handleChange}
+          placeholder="Enter your circuit prompt..."
+          className="w-full p-2 bg-gray-700 text-white border border-gray-500 rounded-md"
+        ></textarea>
+        <div className="flex justify-between mt-4">
+          <button
+            className="h-10 w-24 bg-white text-black rounded-md"
+            onClick={() => handleApi()}
+            disabled={!prompt.trim()}
+          >
+            Generate
+          </button>
+        </div>
       </div>
     </div>
   );
 }
-

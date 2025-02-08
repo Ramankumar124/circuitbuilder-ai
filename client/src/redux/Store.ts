@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authSlice } from "./features/authSlice";
-import { flowSlice } from "./features/flowRefSlice"
+import {circuitSlice} from "./features/circuitSlice"
 export const store = configureStore({
     reducer: {
         auth: authSlice.reducer,
-        flow: flowSlice.reducer
+        circuit: circuitSlice.reducer
     },
 })
 export type RootState = ReturnType<typeof store.getState>
