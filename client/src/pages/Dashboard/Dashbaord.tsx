@@ -3,6 +3,7 @@ import {  FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from '@mui/material/Button';
 import FlowChart from "../../flowchart";
 import { useCircuitContext } from "../../context/circuitContext";
+import { useAppSelector } from "../../redux/hooks/store";
 
 
 
@@ -54,6 +55,8 @@ const ComponentDropdowns = () => {
 };
 
 const Dashbaord = () => {
+  const nodes = useAppSelector((state) => state?.circuit?.node)
+  console.log("nodes",nodes)
 
   return (
     <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
