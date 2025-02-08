@@ -3,6 +3,7 @@ import { FormControl, InputLabel, MenuItem, Select, Card, CardContent, Typograph
 import FlowChart from "../../flowchart";
 import { useCircuitContext } from "../../context/circuitContext";
 import { useAppSelector } from "../../redux/hooks/store";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const getDropdownData = (nodes) => {
   const dropdownData = {};
@@ -51,12 +52,14 @@ const ComponentDropdowns = () => {
 
 const Dashboard = () => {
   const prompt = useAppSelector((state) => state?.circuit?.prompt); // Get the prompt from Redux store
+  const navigate = useNavigate();
+
 
   return (
     <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
       <nav className="text-white bg-gray-800 p-2">
         <div className="flex justify-between items-center p-4 bg-[#2e2e2e] dark:bg-gray-800">
-          <span className="font-bold text-white">My Projects</span>
+          <Button className="font-bold text-white" variant={"outlined"} onClick = {() => navigate("/home")}>New Circuit</Button>
           <div className="flex items-center gap-3">
             <button className="rounded-2xl bg-white text-black py-2 px-4">Share</button>
           </div>
