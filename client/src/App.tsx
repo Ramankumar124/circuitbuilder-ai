@@ -11,14 +11,14 @@ function App() {
   return (
     <>
 
-    {/* <Router basename='/'>
+    <Router basename='/'>
     <Routes>
       <Route path='login' element={<Login />} />
       <Route path='signup' element={<Register />} />
     </Routes>
-    </Router> */}
-   
-<LandingPage />
+    </Router>
+<PromptPage />
+
     </>
  
     
