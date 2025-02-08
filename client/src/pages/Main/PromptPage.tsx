@@ -13,7 +13,7 @@ setPrompt(e.target.value)
 console.log(e.target.value)
 }
   return (
-    <div className={ "bg-black text-white min-h-screen"}>
+    <div className="bg-black text-white min-h-screen 0 ">
       {/* Navbar */}
       <div className="flex justify-between items-center p-4 bg-[#1e1e1e] dark:bg-gray-800">
         <span className="font-bold text-white">My Projects</span>
@@ -25,11 +25,13 @@ console.log(e.target.value)
       </div>
       
       {/* Grid Section */}
+
       <div className=" gap-2 p-5 ml-0 mt-40" >     <div className="flex ml-2 gap-5">
   <div  onClick={addTOPrompt} className="ml-2 bg-[#007bff]   text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consist of 10 led  and a battery</div>
   <div onClick={addTOPrompt} className="ml-2 bg-[#007bff]  text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consist of 10 led  and a battery</div>
   <div onClick={addTOPrompt} className="ml-2 bg-[#007bff]  text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consist of 10 led  and a battery</div>
   <div onClick={addTOPrompt} className="ml-2 bg-[#007bff] text-[#fff] dark:bg-gray-600 h-15 rounded-md p-2">Create a circuit which consist of 10 led  and a battery</div>
+  
      </div>
      <div className="flex ml-30 mt-9 gap-5 text-center items-center">
   <div onClick={addTOPrompt} className="ml-2 bg-[#007bff] text-[#fff] dark:bg-gray-600 h-15  rounded-md p-2">Create a circuit which consit of 10 led  and a battery</div>

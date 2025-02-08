@@ -1,10 +1,11 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { decodeJWT } from "../../utils/decodeToken";
 
 interface User {
-    firstName: string,
-    lastName: string,
-    email: string,
-    id: string
+  firstName: string;
+  lastName: string;
+  email: string;
+  id: string;
 }
 
 interface AuthState {
@@ -12,8 +13,8 @@ interface AuthState {
   token: string | null;
 }
 
-const storedUser = localStorage.getItem('user');
-const isaccess_token = localStorage.getItem('token');
+const storedUser = localStorage.getItem("user");
+const isaccess_token = localStorage.getItem("token");
 
 const initialState: AuthState = {
   user: storedUser ? JSON.parse(storedUser) : null,
@@ -22,38 +23,32 @@ const initialState: AuthState = {
 
 // Update setToken action to expect a token of type string
 export const authSlice = createSlice({
-    initialState,
-    name: 'auth',
-    reducers: {
-      setToken: (state, action: PayloadAction<string>) => { // Accepts token as string
-        const token = action.payload; // Extract token directly
-      
-        try {
-          const base64Url = token.split('.')[1]; // Extract payload part of JWT
-          if (!base64Url) throw new Error("Invalid token format");
-      
-          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-          const decodedPayload = atob(base64);
-          const user = JSON.parse(decodedPayload);
-      
-          state.user = user;
-          state.token = token;
-      
-          localStorage.setItem('token', JSON.stringify(token));
-          localStorage.setItem('user', JSON.stringify(user));
-        } catch (error) {
-          console.error("Failed to decode token:", error);
-          state.user = null;
-          state.token = null;
-        }
-      },
-      
-      
-      remove: (state) => {
-        state.user = null;
-        state.token = null;
-        localStorage.clear();
-      },
+  initialState,
+  name: "auth",
+  reducers: {
+    setToken: (state, action: PayloadAction<AuthState>) => {
+      // Accepts token as string
+      const { token } = action.payload;
+
+      // Decode the payload from the token
+      if (token) {
+        const decodedPayload = decodeJWT(token);
+        state.token = token
+        state.user = decodedPayload;
+
+        //save on localStorage.
+        localStorage.setItem("token", JSON.stringify(token))
+        localStorage.setItem("user", JSON.stringify(decodedPayload));
+      }      
     },
-  });
-  
+
+    remove: (state) => {
+      state.user = null;
+      state.token = null;
+      localStorage.clear();
+    },
+  },
+});
+
+export const { setToken, remove } = authSlice.actions;
+export default authSlice.reducer;
