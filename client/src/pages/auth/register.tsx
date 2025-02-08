@@ -4,7 +4,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { userSignup } from "../../apiService/api";
 import { useAppDispatch } from "../../redux/hooks/store";
-import { setToken } from "../../utils/toke";
+import { setToken } from "../../redux/features/authSlice";
+import { AxiosError } from "axios";
+import toast from "react-hot-toast";
 
 interface RegisterFormInputs {
   firstName: string;
@@ -12,13 +14,27 @@ interface RegisterFormInputs {
   email: string;
   password: string;
 }
+interface authRes {
+  token: string;
+  user: null;
+  message: null;
+}
 
 // Validation Schema using Yup
 const schema = yup.object().shape({
-  firstName: yup.string().min(2, "First name must be at least 2 characters").required("First name is required"),
-  lastName: yup.string().min(2, "Last name must be at least 2 characters").required("Last name is required"),
+  firstName: yup
+    .string()
+    .min(2, "First name must be at least 2 characters")
+    .required("First name is required"),
+  lastName: yup
+    .string()
+    .min(2, "Last name must be at least 2 characters")
+    .required("Last name is required"),
   email: yup.string().email("Invalid email").required("Email is required"),
-  password: yup.string().min(6, "Password must be at least 6 characters").required("Password is required"),
+  password: yup
+    .string()
+    .min(6, "Password must be at least 6 characters")
+    .required("Password is required"),
 });
 
 export default function Register() {
@@ -33,10 +49,17 @@ export default function Register() {
 
   const onSubmit = async (data: RegisterFormInputs) => {
     try {
-      const response = await userSignup(data);
-      dispatch(setToken(response?.token));
+      const response = (await userSignup(data)) as { data: authRes };
+      if (response?.data?.token) {
+        dispatch(setToken(response?.data));
+        toast.success(`${response?.data?.message}`);
+      }
     } catch (error) {
-      console.error("Registration failed", error);
+      if (error instanceof AxiosError) {
+        toast.error(`${error.response?.data?.message}`);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     }
   };
 
@@ -44,7 +67,10 @@ export default function Register() {
     <Box className="flex min-h-screen w-full bg-white text-black overflow-hidden">
       {/* Left Side - Register Form */}
       <Box className="flex flex-col justify-center items-center p-10 gap-3 w-full md:w-1/2">
-        <Typography variant="h3" className="font-bold mb-6 text-black text-center">
+        <Typography
+          variant="h3"
+          className="font-bold mb-6 text-black text-center"
+        >
           Welcome to <span className="text-blue-500">CircuitBuilder</span>
           <span className="text-green-400"> AI</span>
         </Typography>
@@ -103,7 +129,8 @@ export default function Register() {
         </form>
 
         <Typography className="text-gray-400 mt-4 text-center">
-          Already have an account? <span className="text-blue-400 cursor-pointer">Login</span>
+          Already have an account?{" "}
+          <span className="text-blue-400 cursor-pointer">Login</span>
         </Typography>
       </Box>
 
@@ -114,7 +141,8 @@ export default function Register() {
             Idea to <span className="text-blue-400">Slideshow</span> video
           </Typography>
           <Typography className="text-gray-400 mt-2">
-            With Invideo AI, you can turn any content or idea into video, instantly 🚀
+            With Invideo AI, you can turn any content or idea into video,
+            instantly 🚀
           </Typography>
           <Box className="relative mt-6">
             <img
@@ -123,7 +151,10 @@ export default function Register() {
               className="rounded-lg shadow-lg w-full max-w-sm"
             />
           </Box>
-          <Button variant="contained" className="mt-4 bg-purple-500 hover:bg-purple-600 text-lg">
+          <Button
+            variant="contained"
+            className="mt-4 bg-purple-500 hover:bg-purple-600 text-lg"
+          >
             Generate
           </Button>
         </Box>

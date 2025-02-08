@@ -1,7 +1,8 @@
 import axios from "axios";
 import { AxiosRequestConfig, AxiosResponse } from 'axios';
 import { properties } from "../properties/properties";
-import { removeToken } from "../utils/toke";
+import { remove } from "../redux/features/authSlice";
+import { store } from "../redux/Store";
 
 // Create custom Axios instance
 const custom_axios = axios.create({
@@ -29,7 +30,7 @@ custom_axios.interceptors.response.use(
     (error) => {
         if (error.response?.status) {
             if (error.response.status === 401) {
-                removeToken();
+                store.dispatch(remove())
                 window.location.href = "/login";
             }
         }
