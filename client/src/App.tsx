@@ -1,17 +1,14 @@
 
 
 import './App.css'
-import PromptPage from './pages/Main/PromptPage'
-
+import Login from './pages/auth/Login'
+import Register from './pages/auth/register'
 function App() {
 
 
   return (
     
-    <><div className=" mt-0 bg-black" style={{width:"100vw",height:"100vh"}}>
-  <PromptPage />
-    </div>
-  
+    <>
     </>
  
     
