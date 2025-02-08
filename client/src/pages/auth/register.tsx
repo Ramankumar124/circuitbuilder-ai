@@ -7,7 +7,10 @@ import { useAppDispatch } from "../../redux/hooks/store";
 import { setToken } from "../../redux/features/authSlice";
 import { AxiosError } from "axios";
 import toast from "react-hot-toast";
-
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Spinner } from "../../Spinner";
+import { Link } from "react-router-dom";
 interface RegisterFormInputs {
   firstName: string;
   lastName: string;
@@ -39,6 +42,8 @@ const schema = yup.object().shape({
 
 export default function Register() {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const [isloading, setisloading] = useState<boolean>(false)
   const {
     register,
     handleSubmit,
@@ -48,11 +53,13 @@ export default function Register() {
   });
 
   const onSubmit = async (data: RegisterFormInputs) => {
+    setisloading(true)
     try {
       const response = (await userSignup(data)) as { data: authRes };
       if (response?.data?.token) {
         dispatch(setToken(response?.data));
         toast.success(`${response?.data?.message}`);
+        navigate("/home")
       }
     } catch (error) {
       if (error instanceof AxiosError) {
@@ -60,11 +67,17 @@ export default function Register() {
       } else {
         toast.error("An unexpected error occurred");
       }
+      
     }
-  };
+    finally {
+      setisloading(false)
+    }
+ };
 
   return (
-    <Box className="flex min-h-screen w-full bg-white text-black overflow-hidden">
+    <>
+    {isloading && <Spinner />}
+     <Box className="flex min-h-screen w-full bg-white text-black overflow-hidden">
       {/* Left Side - Register Form */}
       <Box className="flex flex-col justify-center items-center p-10 gap-3 w-full md:w-1/2">
         <Typography
@@ -130,7 +143,7 @@ export default function Register() {
 
         <Typography className="text-gray-400 mt-4 text-center">
           Already have an account?{" "}
-          <span className="text-blue-400 cursor-pointer">Login</span>
+          <span className="text-blue-400 cursor-pointer" onClick={() => navigate("/login")}>Login</span>
         </Typography>
       </Box>
 
@@ -153,6 +166,7 @@ export default function Register() {
           </Box>
           <Button
             variant="contained"
+            disabled={isloading}
             className="mt-4 bg-purple-500 hover:bg-purple-600 text-lg"
           >
             Generate
@@ -160,5 +174,7 @@ export default function Register() {
         </Box>
       </Box>
     </Box>
+    </>
+   
   );
 }

@@ -44,8 +44,8 @@ const ComponentDropdowns = () => {
         <FormControl fullWidth key={type} style={{ marginBottom: "1rem" }}>
           <InputLabel>{type.charAt(0).toUpperCase() + type.slice(1)}</InputLabel>
           <Select value={selectedValues[type] || ""} onChange={handleChange(type)}>
-            {[...dropdownData[type]].map((label) => (
-              <MenuItem key={label} value={label}>{label}</MenuItem>
+            {[...dropdownData[type]].map((label,index) => (
+              <MenuItem key={index} value={label}>{label}</MenuItem>
             ))}
           </Select>
         </FormControl>

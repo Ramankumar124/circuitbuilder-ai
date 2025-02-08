@@ -9,9 +9,7 @@ label: string;
 id: string;
 }}
 const LEDNode:React.FC<LEDNodeProps> = ({data}) => {
-  console.log("LEDNode data:", data);
 let color=data.color || "black"
-console.log(color);
 
   // if(color=="undefined") color="red"
   return (

@@ -18,41 +18,68 @@ interface Edge {
   label?: string;
 }
 
-
 interface CircuitState {
-    node: Node | null,
-    edge: Edge | null,
+  node: Node | null;
+  edge: Edge | null;
   circuitName: string | null;
   explanation: string | null;
   suggestions: string[] | null;
 }
 
+// Load data from sessionStorage
+const loadState = <T>(key: string, defaultValue: T): T => {
+  const savedValue = sessionStorage.getItem(key);
+  return savedValue ? JSON.parse(savedValue) : defaultValue;
+};
+
+// Save data to sessionStorage
+const saveState = (key: string, value: any) => {
+  sessionStorage.setItem(key, JSON.stringify(value));
+};
+
+// Initial state with data loaded from sessionStorage
 const initialState: CircuitState = {
-circuitName: null,
-node: null,
-edge: null,  
-explanation: null,
-  suggestions: null,
+  node: loadState<Node | null>("nodes", null),
+  edge: loadState<Edge | null>("edges", null),
+  circuitName: loadState<string | null>("circuitName", null),
+  explanation: loadState<string | null>("explanation", null),
+  suggestions: loadState<string[] | null>("suggestions", null),
 };
 
 export const circuitSlice = createSlice({
   name: "circuit",
   initialState,
   reducers: {
-    setCircuit: (state, action: PayloadAction<{ explanation: string; suggestions: string[], circuitName: string, node: Node, edge: Edge }>) => {
+    setCircuit: (
+      state,
+      action: PayloadAction<{ explanation: string; suggestions: string[]; circuitName: string; node: Node; edge: Edge }>
+    ) => {
       state.node = action.payload.node;
       state.edge = action.payload.edge;
       state.circuitName = action.payload.circuitName;
       state.explanation = action.payload.explanation;
       state.suggestions = action.payload.suggestions;
 
+      // Save each property in sessionStorage
+      saveState("nodes", state.node);
+      saveState("edges", state.edge);
+      saveState("circuitName", state.circuitName);
+      saveState("explanation", state.explanation);
+      saveState("suggestions", state.suggestions);
     },
     clearCircuit: (state) => {
       state.node = null;
       state.edge = null;
-      state.edge = null;
+      state.circuitName = null;
       state.explanation = null;
       state.suggestions = null;
+
+      // Remove each key from sessionStorage
+      sessionStorage.removeItem("nodes");
+      sessionStorage.removeItem("edges");
+      sessionStorage.removeItem("circuitName");
+      sessionStorage.removeItem("explanation");
+      sessionStorage.removeItem("suggestions");
     },
   },
 });
