@@ -5,6 +5,8 @@ import {properties} from "./src/config/properties.js"
 import { connectDB } from "./src/config/dbConnectin.js";
 import {authRoute} from "./src/api/route/user.js"
 import {projectRoute} from "./src/api/route/project.js"
+import { protectRoute } from "./src/api/middleware/protectRoute.js";
+import {shareRouter} from "./src/api/route/share.js"
 const app = express();
 
 connectDB(properties?.MONGO_URI).catch((err) => console.log("MongooDb connection error\n",err));
@@ -31,6 +33,11 @@ app.options("*", cors(corsOption))
 
 
 //Route
+app.use("/api", authRoute)
+app.use("/api", protectRoute, projectRoute)
+app.use("/api",  protectRoute, projectRoute)
+app.use("/api", shareRouter)
+
 
 const PORT = properties?.PORT;
 
