@@ -96,9 +96,9 @@ export default function PromptPage() {
       </div>
 
       {/* Grid Section */}
-      <div className="gap-2 p-5 mt-10">
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
-          {["Create a circuit with 10 LEDs and a battery", "Simple resistor circuit", "Basic motor driver", "Light sensor with buzzer"].map(
+      <div className="gap-2 p-5 ml-138 items-center mt-30">
+        <div className="grid grid-cols-2 md:grid-cols-3 w-300 gap-5">
+          {["Create a circuit with 10 LEDs and a battery", "create a circuit in which a buzzer is connected with battery", "Basic motor driver", "Light sensor with buzzer","create a circuit consit of inductor ,cpacitor and batetry"].map(
             (text, index) => (
               <div
                 key={index}
@@ -113,7 +113,7 @@ export default function PromptPage() {
       </div>
 
       {/* Footer Section */}
-      <div className="p-6 pb-3 mt-4 max-w-xl mx-auto bg-[#2e2e2e] rounded-md">
+      <div className="p-6 pb-3 mt-20  w-200 mx-auto bg-[#2e2e2e] rounded-md">
         <textarea
           value={prompt}
           onChange={handleChange}
