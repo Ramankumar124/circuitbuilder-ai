@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState, useRef } from "react";
+import React, { useEffect, useCallback, useState, useRef, useContext } from "react";
 import {
   ReactFlow,
   useNodesState,
@@ -23,16 +23,20 @@ import jsPDF from "jspdf";
 import * as htmlToImage from "html-to-image";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material"; // Fixed import
 import { useCircuitContext } from "./context/circuitContext";
+import Inductor from "./components/Electric/Indutor";
+import Switch from "./components/Electric/Switch";
 
 // Define custom node types
 const nodeTypes = {
-  battery: Batery,
-  resistor: ResistorNode,
-  led: LEDNode,
-  capacitor: Capacitor,
+  Battery: Batery,
+  Resistor: ResistorNode,
+  Led: LEDNode,
+  Capacitor: Capacitor,
   Buzzer: Buzzer,
-  transistor: Transistor,
+  Transistor: Transistor,
   Diode: Diode,
+  Inductor:Inductor,
+  Switch:Switch
 };
 
 const FlowChart: React.FC = () => {
@@ -44,6 +48,21 @@ const FlowChart: React.FC = () => {
     reactFlowInstance.current = instance;
   };
 
+  const node = useAppSelector((state) => state?.circuit?.node);
+  const edge = useAppSelector((state) => state?.circuit?.edge);
+  // const suggestions = useAppSelector((state) => state?.circuit?.suggestions)
+  // const explanation = useAppSelector((state) => state?.circuit?.explanation);
+  // const circuitName = useAppSelector((state) => state?.circuit?.circuitName);
+
+  // console.log(node);
+
+
+  useEffect(() => {
+    setCircuitData({nodes:node,edges:edge})
+    console.log("circuitData",circuitData);
+    
+  }, [edge,node])
+  
   const downloadImage = useCallback(async (format) => {
     if (!flowRef.current) return;
 
@@ -201,8 +220,8 @@ const FlowChart: React.FC = () => {
  setCircuitData({nodes:initialNodes,edges:initialEdges})
   }, [])
   
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+  const [nodes, setNodes, onNodesChange] = useNodesState(node);
+  const [edges, setEdges, onEdgesChange] = useEdgesState(edge);
 
   const onConnect = useCallback(
     (params: any) => setEdges((eds) => addEdge({ ...params, animated: true }, eds)),

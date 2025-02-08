@@ -41,7 +41,7 @@ return(
       {/* Positive Terminal Handle */}
       <Handle
         type="source"
-        position={Position.Top}
+        position={Position.Left}
         id="positive"
         style={{ left: "98%", top: "115px", background: "red",width:"3px", height:"3px" }}
       />
@@ -49,7 +49,7 @@ return(
       {/* Negative Terminal Handle */}
       <Handle
         type="target"
-        position={Position.Top}
+        position={Position.Right}
         id="negative"
         style={{ left: "125%", top: "115px", background: "black" , width:"3px", height:"3px"}}
       />
