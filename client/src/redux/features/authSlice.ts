@@ -1,60 +1,59 @@
-//AuthSclie to store and reterive user Information and token in local Storage
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-import { createSlice,PayloadAction } from "@reduxjs/toolkit";
+interface User {
+    firstName: string,
+    lastName: string,
+    email: string,
+    id: string
+}
 
-interface loginSignupRes {
-    user: {
-      _id: string | null,
-      name: string | null,
-      email: string | null,
-      mobile: string | null,
-      isVerified: boolean,
-      googleId: null | string,
-      facebookId: null | string,
-      linkedinId: null | string,
-      createdAt: string | null,
-      updatedAt: string | null,
-    } | null;
-    token: string | null;
+interface AuthState {
+  user: User | null;
+  token: string | null;
 }
 
 const storedUser = localStorage.getItem('user');
 const isaccess_token = localStorage.getItem('token');
 
-const initialState: loginSignupRes = { 
-user: storedUser ? JSON.parse(storedUser) : null,
-token: isaccess_token ? JSON.parse(isaccess_token) : null,
+const initialState: AuthState = {
+  user: storedUser ? JSON.parse(storedUser) : null,
+  token: isaccess_token ? JSON.parse(isaccess_token) : null,
 };
 
-
+// Update setToken action to expect a token of type string
 export const authSlice = createSlice({
     initialState,
     name: 'auth',
-
     reducers: {
-        setToken: (state, action: PayloadAction<loginSignupRes>) => {
-            const {token} = action.payload
-            const base64Url = token?.split('.')[1]; 
-            if (!base64Url) return;
-            const base64 = base64Url.replace('-', '+').replace('_', '/');
-            const user = decodeURIComponent(atob(base64).split('').map(function(c) {
-                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-            }).join(''));
-            state.user = JSON.parse(user)
-            state.token = token;
-            
-            localStorage.setItem("token", JSON.stringify(token));
-            localStorage.setItem("user", JSON.stringify(user));
-
-        },
-
-        remove: (state) => {
-            state.user = null
-            state.token = null
-            localStorage.clear();
+      setToken: (state, action: PayloadAction<string>) => { // Accepts token as string
+        const token = action.payload; // Extract token directly
+      
+        try {
+          const base64Url = token.split('.')[1]; // Extract payload part of JWT
+          if (!base64Url) throw new Error("Invalid token format");
+      
+          const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+          const decodedPayload = atob(base64);
+          const user = JSON.parse(decodedPayload);
+      
+          state.user = user;
+          state.token = token;
+      
+          localStorage.setItem('token', JSON.stringify(token));
+          localStorage.setItem('user', JSON.stringify(user));
+        } catch (error) {
+          console.error("Failed to decode token:", error);
+          state.user = null;
+          state.token = null;
         }
-    }
-})
-
-export const {setToken,remove } = authSlice.actions
-export default authSlice.reducer;
+      },
+      
+      
+      remove: (state) => {
+        state.user = null;
+        state.token = null;
+        localStorage.clear();
+      },
+    },
+  });
+  
