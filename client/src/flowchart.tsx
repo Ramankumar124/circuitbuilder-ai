@@ -88,7 +88,7 @@ const FlowChart: React.FC = () => {
   ];
 
   const initialEdges = [
-    { id: "edge-1", source: "Battery1", sourceHandle: "positive", target: "Resistor1", targetHandle: "negative", type: "step",label:"battery to resistor1"  },
+    { id: "edge-1", source: "Battery1", sourceHandle: "positive", target: "Resistor1", targetHandle: "negative", type: "step" },
     { id: "edge-2", source: "Resistor1", sourceHandle: "positive", target: "Transistor1", targetHandle: "base", type: "step" },
     { id: "edge-3", source: "Battery1", sourceHandle: "positive", target: "LED1", targetHandle: "negative", type: "step" },
     { id: "edge-4", source: "LED1", sourceHandle: "positive", target: "LED2", targetHandle: "negative", type: "step" },
@@ -112,7 +112,7 @@ const FlowChart: React.FC = () => {
   );
 
   return (
-    <div className="w-full h-full  relative left-0 bg-blue-600">
+    <div className="w-full h-full  relative left-0 ">
       <ReactFlow
         nodes={nodes}
         edges={edges}
