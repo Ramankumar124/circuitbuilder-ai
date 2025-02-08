@@ -15,7 +15,7 @@ function SavedProject() {
         </div>
         <div className="flex ml-8 mt-8">
             <div className="flex m-3  flex-col ">
-                <div className='bg-[#A3F7BF] border-2 rounded-2xl w-50 h-30'>
+                <div className='bg-[#007bff] border-2 rounded-2xl w-50 h-30'>
 
                 </div>
                 <div className="flex mt-2">
