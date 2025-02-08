@@ -5,6 +5,7 @@ import { AxiosError } from "axios";
 import { useAppDispatch } from "../../redux/hooks/store";
 import { setCircuit } from "../../redux/features/circuitSlice";
 import { useNavigate } from "react-router-dom";
+import { Spinner } from "../../Spinner";
 
 interface CircuitResponse {
   message: string;
@@ -19,6 +20,7 @@ interface CircuitResponse {
 
 export default function PromptPage() {
   const [prompt, setPrompt] = useState("");
+  const [isloading, setisloading] = useState<boolean>(false)
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -37,6 +39,7 @@ export default function PromptPage() {
     }
   
     try {
+      setisloading(true)
       const payload = { prompt };
   
       const response = await createCiruit(payload) as { data: CircuitResponse };
@@ -76,13 +79,17 @@ export default function PromptPage() {
       } else {
         toast.error("An unexpected error occurred");
       }
+    }finally {
+      setisloading(false)
     }
   };
   
   
 
   return (
-    <div className="bg-black text-white min-h-screen">
+  <>
+  {isloading && <Spinner />}
+   <div className="bg-black text-white min-h-screen">
       {/* Navbar */}
       <div className="flex justify-between items-center p-4 bg-[#1e1e1e]">
         <span className="font-bold text-white">My Projects</span>
@@ -115,14 +122,16 @@ export default function PromptPage() {
         ></textarea>
         <div className="flex justify-between mt-4">
           <button
-            className="h-10 w-24 bg-white text-black rounded-md"
+            className="h-10 w-24 bg-white text-black rounded-md cursor-pointer"
             onClick={() => handleApi()}
-            disabled={!prompt.trim()}
+            disabled = {isloading}
           >
             Generate
           </button>
         </div>
       </div>
     </div>
+  </>
+   
   );
 }
