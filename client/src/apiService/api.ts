@@ -12,6 +12,10 @@ interface signreq {
   lastName: string,
 }
 
+interface circuitReq {
+  prompt: string
+}
+
 
 
 
@@ -23,5 +27,8 @@ export function userSignup(data: signreq) {
   return http.post(`/signup`, data);
 }
 
+export function createCiruit(data: circuitReq) {
+  return http.post('/circuit', data)
+}
 
 
