@@ -19,6 +19,7 @@ interface Edge {
 }
 
 interface CircuitState {
+  prompt: string | null;
   node: Node | null;
   edge: Edge | null;
   circuitName: string | null;
@@ -44,6 +45,7 @@ const initialState: CircuitState = {
   circuitName: loadState<string | null>("circuitName", null),
   explanation: loadState<string | null>("explanation", null),
   suggestions: loadState<string[] | null>("suggestions", null),
+  prompt: loadState<string | null>("prompt", null)
 };
 
 export const circuitSlice = createSlice({
@@ -52,13 +54,14 @@ export const circuitSlice = createSlice({
   reducers: {
     setCircuit: (
       state,
-      action: PayloadAction<{ explanation: string; suggestions: string[]; circuitName: string; node: Node; edge: Edge }>
+      action: PayloadAction<{ explanation: string; suggestions: string[]; circuitName: string; node: Node; edge: Edge, prompt: string }>
     ) => {
       state.node = action.payload.node;
       state.edge = action.payload.edge;
       state.circuitName = action.payload.circuitName;
       state.explanation = action.payload.explanation;
       state.suggestions = action.payload.suggestions;
+      state.prompt = action.payload.prompt
 
       // Save each property in sessionStorage
       saveState("nodes", state.node);
@@ -66,6 +69,7 @@ export const circuitSlice = createSlice({
       saveState("circuitName", state.circuitName);
       saveState("explanation", state.explanation);
       saveState("suggestions", state.suggestions);
+      saveState("prompt", state.prompt);
     },
     clearCircuit: (state) => {
       state.node = null;
@@ -80,6 +84,7 @@ export const circuitSlice = createSlice({
       sessionStorage.removeItem("circuitName");
       sessionStorage.removeItem("explanation");
       sessionStorage.removeItem("suggestions");
+      sessionStorage.removeItem("prompt");
     },
   },
 });

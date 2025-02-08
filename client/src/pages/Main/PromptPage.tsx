@@ -62,6 +62,7 @@ export default function PromptPage() {
       if (parsedData) {
         dispatch(
           setCircuit({
+            prompt: prompt,
             node: parsedData?.nodes || null,
             edge: parsedData?.edges || null,
             explanation: parsedData.explanation || null,
