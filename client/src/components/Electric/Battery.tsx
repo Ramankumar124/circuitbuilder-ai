@@ -14,7 +14,7 @@ return(
       .b2 { fill: #eec22d; opacity: 0.71; stroke: #000; stroke-miterlimit: 10; }
       .b3 { fill: #000; stroke: #000; stroke-miterlimit: 10; }
       .b4 { stroke: #000; stroke-width: 8; stroke-miterlimit: 10; }
-      .b5 { font-family: MyriadPro-Regular; font-size: 132.76px; opacity: 0.79; }
+      .b5 { font-family: MyriadPro-Regular; font-size: 132.76px; opacity: 0.79 ;stroke: #ffffff }
     `}
   </style>
   <path className="b1" d="M1995 2335.84h-822c-25.96 0-47-21.04-47-47v-1362c0-25.96 21.04-47 47-47h822c25.96 0 47 21.04 47 47v1362c0 25.96-21.04 47-47 47z"/>
