@@ -6,19 +6,13 @@ import generateCircuit from "../../../util/ai-agent.js"
 //  Create a new circuit
 export const createCircuit = async (req, res) => {
     try {
-        const { projectId, prompt } = req.body;
-
-        const projectExists = await Project.findById(projectId);
-        if (!projectExists) return res.status(404).send({message: "Project not found" });
+        const { prompt } = req.body;
 
         if(!prompt) return res.status(400).send({message: "Enter prompt"})
 
         const circuit = await generateCircuit(prompt)
 
-        const newCircuit = new Circuit({ projectId, prompt, circuit });
-        await newCircuit.save();
-
-        res.status(201).send({ message: "Circuit created", data: newCircuit });
+        res.status(201).send({ message: "Circuit created", data: circuit });
     } catch (error) {
         handleGeminiError(error, res);
     }
@@ -34,7 +28,6 @@ export const getAllCircuits = async (req, res) => {
         handleError(error, res)
     }
 };
-
 
 // Update a circuit
 export const updateCircuit = async (req, res) => {
@@ -56,4 +49,18 @@ export const updateCircuit = async (req, res) => {
         handleError(error, res);
     }
 };
+
+export const saveProjectCircuit = async(req, res) => {
+    try {
+        const {projectName, prompt, circuit, userId} = req.body
+
+       const project = new Project({projectName, userId});
+        await Project.save()
+
+        new Circuit({prompt, circuit, projectId: project?._id})
+        return res.status(200).send({message: "Project created successfully"});
+    } catch (error) {
+        handleError(error, res);
+    }
+}
 
