@@ -9,6 +9,7 @@ export const handleError = (error, res) => {
       const field = Object.keys(error.keyValue)[0]; // Get the field causing the duplication
       return res.status(400).send({ message: `${field} must be unique.`, errors: "Duplicate entry" });
     }
+    console.log(error)
   
     return res.status(500).send({ message: "Server error", error: error.message });
   };

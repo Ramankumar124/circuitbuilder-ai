@@ -1,7 +1,7 @@
 import User from "../../model/user.js"
 import { handleError } from "../../../util/handleError.js";
 import jwt from "jsonwebtoken";
-import { properties } from "../../../config/properties.js";
+import {properties} from "../../../config/properties.js"
 
 export const register = async (req, res) => {
   try {
@@ -31,6 +31,7 @@ export const register = async (req, res) => {
     };
 
     const JWT_SECRET_KEY = properties?.JWT_SECERT_KEY;
+    console.log(JWT_SECRET_KEY)
 
     const token = jwt.sign(payload, JWT_SECRET_KEY, {
       expiresIn: "30d",
@@ -38,9 +39,7 @@ export const register = async (req, res) => {
 
     res.status(200).send({
       message: "User registered successfully.",
-      data: {
-        token,
-      },
+      token,
     });
   } catch (error) {
     handleError(error, res);
