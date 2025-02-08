@@ -3,6 +3,8 @@ import {  FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from '@mui/material/Button';
 import FlowChart from "../../flowchart";
 import {toPng,toSvg,toJpeg} from "html-to-image"
+import { useAppDispatch } from "../../redux/hooks/store";
+import { setFlowRef } from "../../redux/features/flowRefSlice";
 import * as htmlToImage from 'html-to-image'
 import jsPDF from "jspdf"
 const initialNodes = [
@@ -60,85 +62,86 @@ const ComponentDropdowns = () => {
 };
 
 const Dashbaord = () => {
-  const [option, setOption] = useState("");
-const [exportMethod, setExportMethod] = useState("");
+//   const [option, setOption] = useState("");
+//   const dispatch = useAppDispatch();
+// const [exportMethod, setExportMethod] = useState("");
 
 
-const flowRef = useRef(null);
 
-  const reactFlowInstance = useRef(null);
-  const onInit = (instance) => {
-    reactFlowInstance.current = instance;
-  };
+// const flowRef = useRef(null);
+//   const reactFlowInstance = useRef(null);
+//   const onInit = (instance) => {
+//     reactFlowInstance.current = instance;
+//   };
 
 
-  const downloadImage = useCallback(async (format) => {
-    if (!flowRef.current) return;
+//   const downloadImage = useCallback(async (format) => {
+//     if (!flowRef.current) return;
   
-    reactFlowInstance.current?.fitView();
+//     reactFlowInstance.current?.fitView();
     
-    const options = {
-      quality: 0.7,
-      pixelRatio: 1,
-      backgroundColor: '#ffffff',
-      filter: (node) => !node?.classList?.contains('react-flow__controls'),
-    };
+//     const options = {
+//       quality: 0.7,
+//       pixelRatio: 1,
+//       backgroundColor: '#ffffff',
+//       filter: (node) => !node?.classList?.contains('react-flow__controls'),
+//     };
   
-    try {
-      let dataUrl;
+//     try {
+//       let dataUrl;
       
-      // For PDF, we'll first capture as PNG
-      if (format === 'pdf') {
-        dataUrl = await toPng(flowRef.current, options);
-      } else {
-        switch (format) {
-          case 'png':
-            dataUrl = await toPng(flowRef.current, options);
-            break;
-          case 'jpeg':
-            dataUrl = await toJpeg(flowRef.current, options);
-            break;
-          case 'svg':
-            dataUrl = await toSvg(flowRef.current, options);
-            break;
-          default:
-            return;
-        }
-      }
+//       // For PDF, we'll first capture as PNG
+//       if (format === 'pdf') {
+//         dataUrl = await toPng(flowRef.current, options);
+//       } else {
+//         switch (format) {
+//           case 'png':
+//             dataUrl = await toPng(flowRef.current, options);
+//             break;
+//           case 'jpeg':
+//             dataUrl = await toJpeg(flowRef.current, options);
+//             break;
+//           case 'svg':
+//             dataUrl = await toSvg(flowRef.current, options);
+//             break;
+//           default:
+//             return;
+//         }
+//       }
   
-      if (format === 'pdf') {
-        // PDF Generation
-        const pdf = new jsPDF({
-          orientation: 'landscape', // or 'portrait' based on your needs
-          unit: 'mm',
-          format: 'a4'
-        });
+//       if (format === 'pdf') {
+//         // PDF Generation
+//         const pdf = new jsPDF({
+//           orientation: 'landscape', // or 'portrait' based on your needs
+//           unit: 'mm',
+//           format: 'a4'
+//         });
   
-        const imgProps = pdf.getImageProperties(dataUrl);
-        const pdfWidth = pdf.internal.pageSize.getWidth();
-        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+//         const imgProps = pdf.getImageProperties(dataUrl);
+//         const pdfWidth = pdf.internal.pageSize.getWidth();
+//         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
   
-        pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
-        pdf.save('diagram.pdf');
-      } else {
-        // Existing image download logic
-        const link = document.createElement('a');
-        link.download = `diagram.${format}`;
-        link.href = dataUrl;
-        link.click();
-      }
-    } catch (error) {
-      console.error('Error exporting:', error);
-    }
-  }, []);
+//         pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
+//         pdf.save('diagram.pdf');
+//       } else {
+//         // Existing image download logic
+//         const link = document.createElement('a');
+//         link.download = `diagram.${format}`;
+//         link.href = dataUrl;
+//         link.click();
+//       }
+//     } catch (error) {
+//       console.error('Error exporting:', error);
+//     }
+//   }, []);
 
 
 
  
 
-  const handleExportFileSave = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setExportMethod(event.target.value as string);
-  };
+//   const handleExportFileSave = (event: React.ChangeEvent<{ value: unknown }>) => {
+//     setExportMethod(event.target.value as string);
+//   };
   return (
     <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
       <nav className="text-white bg-gray-800 p-2">
@@ -160,25 +163,11 @@ const flowRef = useRef(null);
             <h3 className="font-bold mb-2">Component Dropdowns</h3>
             <ComponentDropdowns />
           </div>
-        <div className="flex justify-center mt-4 gap-4">
-        <Button variant="contained" className=" bg-blue-500 hover:bg-blue-600 text-lg">
+        <div className="flex justify-center mt-4 gap-4 mr-48">
+        <Button variant="contained" className=" bg-blue-500 hover:bg-blue-600 text-lg ">
             Save
             </Button>
-            <div>
-            <FormControl fullWidth style={{width:'150px'}}>
-      <InputLabel id="dropdown-label" >Export As</InputLabel>
-      <Select
-        labelId="dropdown-label"
-        value={exportMethod}
-        onChange={handleExportFileSave}
-      >
-        <MenuItem value="option1" onClick={()=>downloadImage('png')}>PNG</MenuItem>
-        <MenuItem value="option2" onClick={()=>downloadImage('jpeg')}>JPEG</MenuItem>
-        <MenuItem value="option3" onClick={()=>downloadImage('pdf')}>PDF</MenuItem>
-        <MenuItem value="option3 " onClick={()=>downloadImage('svg')}>SVG</MenuItem>
-      </Select>
-    </FormControl>
-            </div>
+
         </div>
         </div>
       </div>
