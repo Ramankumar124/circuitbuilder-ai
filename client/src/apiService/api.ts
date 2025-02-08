@@ -15,6 +15,9 @@ interface signreq {
 interface circuitReq {
   prompt: string
 }
+interface shareReq {
+  circuitId: string
+}
 
 
 
@@ -31,4 +34,7 @@ export function createCiruit(data: circuitReq) {
   return http.post('/circuit', data)
 }
 
+export function generateSharelink(data: shareReq) {
+  return http.post("/share", data)
+}
 

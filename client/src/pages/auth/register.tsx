@@ -10,7 +10,6 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { Spinner } from "../../Spinner";
-import { Link } from "react-router-dom";
 interface RegisterFormInputs {
   firstName: string;
   lastName: string;
