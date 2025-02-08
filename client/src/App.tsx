@@ -10,16 +10,19 @@ function App() {
   return (
     <>
 
-   <Router basename='/'>
+
+    <Router basename='/'>
+
     <Routes>
       <Route path='login' element={<Login />} />
       <Route path='signup' element={<Register />} />
       <Route path='dashboard' element={<Dashboard />} />
       <Route path='home' element={<PromptPage />} />
     </Routes>
-    </Router> 
-   
-{/* <LandingPage /> */}
+
+    </Router>
+<PromptPage />
+
     </>
  
     

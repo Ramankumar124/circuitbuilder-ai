@@ -1,17 +1,17 @@
-import React from "react";
+import React, { useRef } from "react";
 import Logo from "../../Images/Logo.jpg"
 
 const LandingPage: React.FC = () => {
+  const aboutSectionRef = useRef(null);
+  const scrollToAbout = () => {
+    aboutSectionRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
   return (
     <div className="bg-gray-900 text-white min-h-screen">
       {/* Navbar */}
       <nav className="flex justify-between items-center p-5 bg-gray-800 shadow-md">
         <h1 className="text-yellow-400 text-2xl font-bold">AICB</h1>
-        <div className="space-x-6  ">
-          <a href="#" className="text-white  hover:text-gray-300">Home</a>
-          <a href="#" className="text-white hover:text-gray-300">About</a>
-          <a href="#" className="text-white hover:text-gray-300">Try It</a>
-        </div>
+     
         <div className="space-x-4">
           <button className="bg-orange-500 text-black px-4 py-2 rounded-md">Sign up</button>
           <button className="bg-yellow-400 text-black px-4 py-2 rounded-md">Sign in</button>
@@ -37,7 +37,7 @@ const LandingPage: React.FC = () => {
       </section>
 
       {/* About Section */}
-      <section className="bg-gray-800 py-20 px-5">
+      <section ref={aboutSectionRef}  className="bg-gray-800 py-20 px-5">
         <h3 className="text-center text-3xl font-bold mb-10">About</h3>
         <div className="max-w-5xl mx-auto ml-auto flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 space-y-6">
