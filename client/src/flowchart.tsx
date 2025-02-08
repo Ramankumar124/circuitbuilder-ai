@@ -22,6 +22,7 @@ import { toPng, toSvg, toJpeg } from "html-to-image";
 import jsPDF from "jspdf";
 import * as htmlToImage from "html-to-image";
 import { FormControl, InputLabel, Select, MenuItem } from "@mui/material"; // Fixed import
+import { useCircuitContext } from "./context/circuitContext";
 
 // Define custom node types
 const nodeTypes = {
@@ -38,7 +39,7 @@ const FlowChart: React.FC = () => {
   const flowRef = useRef(null);
   const reactFlowInstance = useRef(null);
   const [exportMethod, setExportMethod] = useState(""); // Fixed missing state
-
+ const  {circuitData,setCircuitData}=useCircuitContext()
   const onInit = (instance) => {
     reactFlowInstance.current = instance;
   };
@@ -196,6 +197,10 @@ const FlowChart: React.FC = () => {
     },
   ];
 
+  useEffect(() => {
+ setCircuitData({nodes:initialNodes,edges:initialEdges})
+  }, [])
+  
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
 

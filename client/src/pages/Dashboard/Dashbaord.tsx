@@ -1,25 +1,11 @@
-import { useCallback, useRef, useState } from "react";
+import {  useEffect, useState } from "react";
 import {  FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 import Button from '@mui/material/Button';
 import FlowChart from "../../flowchart";
-import {toPng,toSvg,toJpeg} from "html-to-image"
-import { useAppDispatch } from "../../redux/hooks/store";
-import { setFlowRef } from "../../redux/features/flowRefSlice";
-import * as htmlToImage from 'html-to-image'
-import jsPDF from "jspdf"
-const initialNodes = [
-  { id: "Battery1", type: "battery", data: { label: "Battery (9V)" } },
-  { id: "Resistor1", type: "resistor", data: { label: "Resistor (1kΩ)" } },
-  { id: "Resistor2", type: "resistor", data: { label: "Resistor (470Ω)" } },
-  { id: "Transistor1", type: "transistor", data: { label: "NPN Transistor" } },
-  { id: "LED1", type: "led", data: { label: "LED (Red)" } },
-  { id: "LED2", type: "led", data: { label: "LED (Green)" } },
-  { id: "Buzzer1", type: "buzzer", data: { label: "Buzzer (5V)" } },
-  { id: "Capacitor1", type: "capacitor", data: { label: "Capacitor (10µF)" } }
-  
-  
-  
-];
+import { useCircuitContext } from "../../context/circuitContext";
+
+
+
 
 const getDropdownData = (nodes) => {
   const dropdownData = {};
@@ -36,11 +22,17 @@ const getDropdownData = (nodes) => {
 };
 
 
-
 const ComponentDropdowns = () => {
-  const dropdownData = getDropdownData(initialNodes);
-  const [selectedValues, setSelectedValues] = useState({});
-
+    const [selectedValues, setSelectedValues] = useState({});
+    const [dropdownData, setDropdownData] = useState({}); 
+    const {circuitData} =useCircuitContext();
+    
+    useEffect(() => {
+        if (circuitData?.nodes) {
+          setDropdownData(getDropdownData(circuitData.nodes));
+        }
+      }, [circuitData]);
+  
   const handleChange = (type) => (event) => {
     setSelectedValues({ ...selectedValues, [type]: event.target.value });
   };
@@ -62,86 +54,7 @@ const ComponentDropdowns = () => {
 };
 
 const Dashbaord = () => {
-//   const [option, setOption] = useState("");
-//   const dispatch = useAppDispatch();
-// const [exportMethod, setExportMethod] = useState("");
 
-
-
-// const flowRef = useRef(null);
-//   const reactFlowInstance = useRef(null);
-//   const onInit = (instance) => {
-//     reactFlowInstance.current = instance;
-//   };
-
-
-//   const downloadImage = useCallback(async (format) => {
-//     if (!flowRef.current) return;
-  
-//     reactFlowInstance.current?.fitView();
-    
-//     const options = {
-//       quality: 0.7,
-//       pixelRatio: 1,
-//       backgroundColor: '#ffffff',
-//       filter: (node) => !node?.classList?.contains('react-flow__controls'),
-//     };
-  
-//     try {
-//       let dataUrl;
-      
-//       // For PDF, we'll first capture as PNG
-//       if (format === 'pdf') {
-//         dataUrl = await toPng(flowRef.current, options);
-//       } else {
-//         switch (format) {
-//           case 'png':
-//             dataUrl = await toPng(flowRef.current, options);
-//             break;
-//           case 'jpeg':
-//             dataUrl = await toJpeg(flowRef.current, options);
-//             break;
-//           case 'svg':
-//             dataUrl = await toSvg(flowRef.current, options);
-//             break;
-//           default:
-//             return;
-//         }
-//       }
-  
-//       if (format === 'pdf') {
-//         // PDF Generation
-//         const pdf = new jsPDF({
-//           orientation: 'landscape', // or 'portrait' based on your needs
-//           unit: 'mm',
-//           format: 'a4'
-//         });
-  
-//         const imgProps = pdf.getImageProperties(dataUrl);
-//         const pdfWidth = pdf.internal.pageSize.getWidth();
-//         const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-  
-//         pdf.addImage(dataUrl, 'PNG', 0, 0, pdfWidth, pdfHeight);
-//         pdf.save('diagram.pdf');
-//       } else {
-//         // Existing image download logic
-//         const link = document.createElement('a');
-//         link.download = `diagram.${format}`;
-//         link.href = dataUrl;
-//         link.click();
-//       }
-//     } catch (error) {
-//       console.error('Error exporting:', error);
-//     }
-//   }, []);
-
-
-
- 
-
-//   const handleExportFileSave = (event: React.ChangeEvent<{ value: unknown }>) => {
-//     setExportMethod(event.target.value as string);
-//   };
   return (
     <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
       <nav className="text-white bg-gray-800 p-2">

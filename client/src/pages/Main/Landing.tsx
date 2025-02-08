@@ -7,35 +7,35 @@ const LandingPage: React.FC = () => {
     aboutSectionRef.current?.scrollIntoView({ behavior: "smooth" });
   };
   return (
-    <div className="bg-gray-900 text-white min-h-screen">
+    <div className="bg-gray-900 text-white  min-h-screen">
       {/* Navbar */}
       <nav className="flex justify-between items-center p-5 bg-gray-800 shadow-md">
         <h1 className="text-yellow-400 text-2xl font-bold">AICB</h1>
      
         <div className="space-x-4">
-          <button className="bg-orange-500 text-black px-4 py-2 rounded-md">Sign up</button>
-          <button className="bg-yellow-400 text-black px-4 py-2 rounded-md">Sign in</button>
+          <a href="/signup" className="bg-orange-500 text-white px-4 py-2 rounded-md">Sign up</a>
+          <a href="/login" className="bg-yellow-400 text-white px-4 py-2 rounded-md">Sign in</a>
         </div>
       </nav>
 
+<div className="flex items-center justify-center mt-20">
       {/* Hero Section */}
-      <section className="text-center py-20 px-5">
-        <h2 className="text-4xl font-bold mb-4">AI-Powered Circuit Design</h2>
-        <p className="text-xl font-semibold text-blue-400 inline">Smarter,</p>
-        <p className="text-xl font-semibold text-yellow-400 inline"> Faster,</p>
-        <p className="text-xl font-semibold text-green-400 inline"> Effortless!</p>
-        <p className="max-w-2xl mx-auto mt-4 text-gray-300">
+      <section className="text-center py-20 px-5 w-screen h-[100%] mb-10">
+        <h2 className="text-6xl font-bold mb-4">AI-Powered Circuit Design</h2>
+        <p className="text-6xl font-semibold text-blue-400 inline">Smarter,</p>
+        <p className="text-6xl font-semibold text-yellow-400 inline"> Faster,</p>
+        <p className="text-6xl font-semibold text-green-400 inline"> Effortless!</p>
+        <p className="max-w-6xl text-xl mx-auto mt-4 text-gray-300">
           Tired of complex circuit design? Meet our AI Circuit Builder—your intelligent
           assistant for effortless electronic circuit creation. Drag, drop, and let AI optimize
           your design in real-time. Whether you're a beginner or a pro, experience the future
           of circuit building today!
         </p>
         <div className="mt-6 space-x-4">
-          <button className="bg-red-500 px-6 py-3 rounded-md">Get Started</button>
-          <button className="bg-red-500 px-6 py-3 rounded-md">Explore Feature</button>
+          <a href="/home" className="bg-red-500 px-6 py-3 rounded-md">Generate Circuit</a>
         </div>
       </section>
-
+      </div>
       {/* About Section */}
       <section ref={aboutSectionRef}  className="bg-gray-800 py-20 px-5">
         <h3 className="text-center text-3xl font-bold mb-10">About</h3>

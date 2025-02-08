@@ -4,23 +4,27 @@ import Login from './pages/auth/Login'
 import Register from './pages/auth/register'
 import Dashboard from './pages/Dashboard/Dashbaord'
 import PromptPage from './pages/Main/PromptPage'
+import LandingPage from './pages/Main/Landing'
+import SavedProject from './pages/Main/SavedProject'
 function App() {
 
 
   return (
     <>
 
-
-    <Router basename='/'>
+    <Router basename='/' >
 
     <Routes>
+      <Route path='/' element={<LandingPage />} />
       <Route path='login' element={<Login />} />
       <Route path='signup' element={<Register />} />
-      <Route path='/' element={<Dashboard />}></Route>
-      <Route path='/prompt' element ={<PromptPage />}></Route>
+      <Route path='dashboard' element={<Dashboard />} />
+      <Route path='home' element={<PromptPage />} />
+      <Route path='myProjects'  element={<SavedProject/>}/>
     </Routes>
 
     </Router>
+
 
     </>
  
