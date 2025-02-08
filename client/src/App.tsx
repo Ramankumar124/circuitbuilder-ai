@@ -1,6 +1,5 @@
-
-
 import './App.css'
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom"
 import Login from './pages/auth/Login'
 import Register from './pages/auth/register'
 import Dashboard from './pages/Dashboard/Dashbaord'
@@ -9,11 +8,13 @@ function App() {
 
   return (
     <>
-    <div className='w-screen h-full -ml-[30%] -mb-[10%]'>
-  {/* <Login/> */}
-  {/* <Register/> */}
-  <Dashboard/>
-  </div>
+
+    <Router basename='/'>
+    <Routes>
+      <Route path='login' element={<Login />} />
+      <Route path='signup' element={<Register />} />
+    </Routes>
+    </Router>
     </>
   )
 }
