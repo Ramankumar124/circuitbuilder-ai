@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 import cors from "cors"
 import {properties} from "./src/config/properties.js"
 import { connectDB } from "./src/config/dbConnectin.js";
+import {authRoute} from "./src/api/route/user.js"
+import {projectRoute} from "./src/api/route/project.js"
 const app = express();
 
 connectDB(properties?.MONGO_URI).catch((err) => console.log("MongooDb connection error\n",err));
