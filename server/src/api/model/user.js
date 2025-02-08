@@ -1,5 +1,6 @@
 import mongoose from "mongoose"
 import bcrypt from "bcrypt"
+import { properties } from "../../config/properties.js";
 
 export const userSchema = new mongoose.Schema({
     firstName: {
