@@ -3,8 +3,10 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { useAppDispatch } from '../../redux/hooks/store';
-import { setToken } from '../../utils/toke';
 import { userLogin } from '../../apiService/api';
+import { setToken } from "../../redux/features/authSlice.js";
+import toast from 'react-hot-toast';
+import { AxiosError } from 'axios';
 
 interface LoginFormInputs {
   email: string;
@@ -12,7 +14,8 @@ interface LoginFormInputs {
 }
 
 interface LoginRes {
-  message: string,
+  user: null;
+  message: string;
   token: string;
 }
 
@@ -35,12 +38,17 @@ export default function Login() {
 
   const onSubmit = async (data: LoginFormInputs) => {
     try {
-      const response = await userLogin(data) as { data: LoginRes }; // Ensure response matches expected structure
+      const response = await userLogin(data) as { data: LoginRes };
       if (response?.data?.token) {
-        dispatch(setToken(response.data.token)); // Pass token directly as a string
+        dispatch(setToken(response?.data));
+        toast.success(`${response?.data?.message}`);
       }
     } catch (error) {
-      console.error('Login failed', error);
+      if (error instanceof AxiosError) {
+        toast.error(`${error.response?.data?.message}`);
+      } else {
+        toast.error("An unexpected error occurred");
+      }
     }
   };
 
@@ -59,7 +67,7 @@ export default function Login() {
             {...register('email')}
             variant="outlined"
             placeholder="Email"
-            className="w-full mb-2 bg-gray-200 text-black rounded-lg"
+            className="w-full mb-3 bg-gray-200 text-black rounded-lg" // added mb-3 to add gap
             error={!!errors.email}
             helperText={errors.email?.message}
           />
@@ -70,7 +78,7 @@ export default function Login() {
             type="password"
             variant="outlined"
             placeholder="Password"
-            className="w-full mb-2 bg-gray-200 text-black rounded-lg"
+            className="w-full mb-3 bg-gray-200 text-black rounded-lg" // added mb-3 to add gap
             error={!!errors.password}
             helperText={errors.password?.message}
           />
