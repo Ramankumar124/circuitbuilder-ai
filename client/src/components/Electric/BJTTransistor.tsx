@@ -2,14 +2,25 @@ import React from "react";
 import { Handle, Position, NodeProps } from "@xyflow/react";
 
 interface TransistorNodeProps {
-  first: "collector" | "base" | "emitter";
-  second: "collector" | "base" | "emitter";
-  third: "collector" | "base" | "emitter";
+  first:{
+    type:"source" | "target",
+    pintype:"collector" | "base" | "emitter";
+  } 
+  second: {
+    type:"source" | "target",
+    pintype:"collector" | "base" | "emitter";
+  } 
+  third: {
+    type:"source" | "target",
+    pintype:"collector" | "base" | "emitter";
+  } 
 }
 
 
 
 const TransistorNode: React.FC<NodeProps<TransistorNodeProps>> = ({ data }) => {
+  console.log(data);
+  
   return (
     <div className="relative ">
       {/* Transistor SVG */}
@@ -33,22 +44,22 @@ const TransistorNode: React.FC<NodeProps<TransistorNodeProps>> = ({ data }) => {
 
       {/* Handles for Collector, Base, and Emitter */}  
       <Handle
-        type="target"
+        type={data.first.type}
         position={Position.Left}
-        id={data.first}
+        id={data.first.pintype}
         style={{ left: "40%",top: "90%" }}
        
       />
       <Handle
-        type="target"
+        type={data.second.type}
         position={Position.Bottom}
-        id={data.second}
+        id={data.second.pintype}
         style={{ top: "90%",left:"47%"}}
       />
       <Handle
-        type="source"
+        type={data.third.type}
         position={Position.Right}
-        id={data.third}
+        id={data.third.pintype}
         style={{ top: "90%",right:"47%"}}
        
       />

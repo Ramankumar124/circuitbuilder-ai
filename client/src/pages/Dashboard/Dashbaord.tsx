@@ -1,10 +1,12 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { FormControl, InputLabel, MenuItem, Select, Card, CardContent, Typography, Button } from "@mui/material";
 import FlowChart from "../../flowchart";
 import { useCircuitContext } from "../../context/circuitContext";
 import { useAppSelector } from "../../redux/hooks/store";
+import { toJpeg, toPng, toSvg } from "html-to-image";
+import jsPDF from "jspdf";
 
-const getDropdownData = (nodes) => {
+const getDropdownData = (nodes:object) => {
   const dropdownData = {};
   
   nodes.forEach((node) => {
@@ -50,7 +52,71 @@ const ComponentDropdowns = () => {
 };
 
 const Dashboard = () => {
+   const  {flowRef}=useCircuitContext()
+    const reactFlowInstance = useRef(null);
+  
   const prompt = useAppSelector((state) => state?.circuit?.prompt); // Get the prompt from Redux store
+const alldata=  useAppSelector((state) => state?.circuit);
+const [exportMethod, setExportMethod] = useState("");
+  const downloadImage = useCallback(async (format) => {
+    if (!flowRef.current) return;
+
+    reactFlowInstance.current?.fitView();
+
+    const options = {
+      quality: 0.7,
+      pixelRatio: 1,
+      backgroundColor: "#ffffff",
+      filter: (node) => !node?.classList?.contains("react-flow__controls"),
+    };
+
+    try {
+      let dataUrl;
+
+      // For PDF, capture as PNG first
+      if (format === "pdf") {
+        dataUrl = await toPng(flowRef.current, options);
+      } else {
+        switch (format) {
+          case "png":
+            dataUrl = await toPng(flowRef.current, options);
+            break;
+          case "jpeg":
+            dataUrl = await toJpeg(flowRef.current, options);
+            break;
+          case "svg":
+            dataUrl = await toSvg(flowRef.current, options);
+            break;
+          default:
+            return;
+        }
+      }
+
+      if (format === "pdf") {
+        const pdf = new jsPDF({
+          orientation: "landscape",
+          unit: "mm",
+          format: "a4",
+        });
+
+        const imgProps = pdf.getImageProperties(dataUrl);
+        const pdfWidth = pdf.internal.pageSize.getWidth();
+        const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+        pdf.addImage(dataUrl, "PNG", 0, 0, pdfWidth, pdfHeight);
+        pdf.save("diagram.pdf");
+      } else {
+        const link = document.createElement("a");
+        link.download = `diagram.${format}`;
+        link.href = dataUrl;
+        link.click();
+      }
+    } catch (error) {
+      console.error("Error exporting:", error);
+    }
+  }, []);
+
+console.log("new circuit data",alldata);
 
   return (
     <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
@@ -80,6 +146,25 @@ const Dashboard = () => {
             <Button variant="contained" className="bg-blue-500 hover:bg-blue-600 text-lg">
               Save
             </Button>
+                   <FormControl fullWidth style={{ width: "150px" }}>
+                      <InputLabel id="dropdown-label">Export As</InputLabel>
+                      <Select
+                        labelId="dropdown-label"
+                        value={exportMethod}
+                        onChange={(event) => {
+                          const format = event.target.value;
+                          setExportMethod(format);
+                          if (format) {
+                            downloadImage(format);
+                          }
+                        }}
+                      >
+                        <MenuItem value="png">PNG</MenuItem>
+                        <MenuItem value="jpeg">JPEG</MenuItem>
+                        <MenuItem value="pdf">PDF</MenuItem>
+                        <MenuItem value="svg">SVG</MenuItem>
+                      </Select>
+                    </FormControl>
           </div>
 
           {/* Card Component to Display Prompt */}
