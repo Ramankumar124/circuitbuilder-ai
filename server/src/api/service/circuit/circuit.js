@@ -13,6 +13,8 @@ export const createCircuit = async (req, res) => {
         const circuit = await generateCircuit(prompt)
 
         res.status(201).send({ message: "Circuit created", data: circuit });
+        console.log(circuit);
+        
     } catch (error) {
         handleGeminiError(error, res);
     }
