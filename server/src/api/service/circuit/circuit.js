@@ -2,6 +2,7 @@ import Circuit from "../../model/circuit.js"
 import Project from "../../model/project.js"
 import {handleError,handleGeminiError} from "../../../util/handleError.js"
 import generateCircuit from "../../../util/ai-agent.js"
+import { systemPrompt,enhanceSystemPrompt } from "../../../prompt/systemPrompt.js"
 
 //  Create a new circuit
 export const createCircuit = async (req, res) => {
@@ -10,7 +11,7 @@ export const createCircuit = async (req, res) => {
 
         if(!prompt) return res.status(400).send({message: "Enter prompt"})
 
-        const circuit = await generateCircuit(prompt)
+        const circuit = await generateCircuit(prompt, systemPrompt)
 
         res.status(201).send({ message: "Circuit created", data: circuit });
         console.log(circuit);
@@ -66,3 +67,18 @@ export const saveProjectCircuit = async(req, res) => {
     }
 }
 
+export const enhancePrompt = async(req, res) => {
+    try {
+        const { prompt } = req.body;
+
+        if(!prompt) return res.status(400).send({message: "Enter prompt"})
+
+        const enhacedPrompt = await generateCircuit(prompt,enhanceSystemPrompt)
+
+        res.status(201).send({ message: "Enhanced prompt generated successfully.", data: enhacedPrompt });
+        console.log(enhacedPrompt);
+        
+    } catch (error) {
+        handleGeminiError(error, res);
+    }
+}
