@@ -21,7 +21,6 @@ function App() {
       <Route path='dashboard' element={<Dashboard />} />
       <Route path='home' element={<PromptPage />} />
       <Route path='myProjects'  element={<SavedProject/>}/>
- 
     </Routes>
 
     </Router>

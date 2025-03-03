@@ -144,8 +144,8 @@ export default function PromptPage() {
       <nav id="header" className="fixed w-full z-50 bg-[#191919]">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center ">
           <div className="flex items-center text-5xl text-[#899598] -ml-10">
-          {/* <LiaHamburgerSolid /> */}
-          <RxHamburgerMenu />
+          <LiaHamburgerSolid />
+          {/* <RxHamburgerMenu /> */}
           </div>
         </div>
       </nav>

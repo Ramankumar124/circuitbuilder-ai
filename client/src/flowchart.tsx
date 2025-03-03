@@ -46,7 +46,6 @@ const FlowChart: React.FC = () => {
       <ReactFlow
         nodes={nodes}
         edges={edges}
-        
         nodeTypes={nodeTypes}
         onNodesChange={onNodesChange}
         onEdgesChange={onEdgesChange}

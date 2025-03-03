@@ -58,7 +58,7 @@ const Dashboard = () => {
     const reactFlowInstance = useRef(null);
   
   const prompt = useAppSelector((state) => state?.circuit?.prompt); // Get the prompt from Redux store
-const alldata=  useAppSelector((state) => state?.circuit);
+const circuitdata=  useAppSelector((state) => state?.circuit);
 const [exportMethod, setExportMethod] = useState("");
   const downloadImage = useCallback(async (format) => {
     if (!flowRef.current) return;
@@ -118,12 +118,11 @@ const [exportMethod, setExportMethod] = useState("");
     }
   }, []);
 
-console.log("new circuit data",alldata);
 
   return (
     <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
-      <nav className="text-white bg-gray-800 p-2">
-        <div className="flex justify-between items-center p-4 bg-[#2e2e2e] dark:bg-gray-800">
+      <nav className="text-white bg-[#282626] p-2">
+        <div className="flex justify-between items-center p-4 bg-[#282626] ">
         <div className="flex items-center">
           <a className="text-white font-bold text-2xl">
             <span className="text-[#6E56CF]">Circuit</span>Builder
@@ -140,22 +139,15 @@ console.log("new circuit data",alldata);
         <div id="left" className="w-[20%] h-[95%] px-4 text-white bg-[#262626] m-[10px] rounded-2xl">
           <h1 className="font-bold text-2xl py-4   text-start">Components</h1>
         <ComponentDropdowns />
-        </div>
-        <div id="mid" className="w-[60%] h-[95%] flex items-start justify-center rounded-4xl  m-[20px]">
-          <FlowChart />
-        </div>
-
-        <div className="w-1 bg-black "></div>
-
-        <div id="right" className="w-[20%] h-[95%] p-4 text-white bg-[#262626] m-[10px] rounded-2xl">
-         
-          <div className="flex justify-center mt-4 gap-4">
+        <div className="flex justify-center mt-4 gap-4">
             <Button variant="contained" className="bg-blue-500 hover:bg-blue-600 text-lg">
               Save
             </Button>
-                   <FormControl fullWidth style={{ width: "150px" }}>
-                      <InputLabel id="dropdown-label">Export As</InputLabel>
+                   <FormControl fullWidth style={{ width: "150px",backgroundColor:"#404040",color:"white" ,border:"2px"}}>
+                      <InputLabel id="dropdown-label" style={{color:"white"}}>Export As</InputLabel>
                       <Select
+                       style={{color:"white"
+                       }}
                         labelId="dropdown-label"
                         value={exportMethod}
                         onChange={(event) => {
@@ -173,12 +165,29 @@ console.log("new circuit data",alldata);
                       </Select>
                     </FormControl>
           </div>
+        </div>
+        <div id="mid" className="w-[60%] h-[95%] flex items-start justify-center rounded-4xl  m-[20px]">
+          <FlowChart />
+        </div>
 
+        <div className="w-1 bg-black "></div>
+
+        <div id="right" className="w-[20%] h-[95%] p-4 text-white bg-[#262626] m-[10px] rounded-2xl">
+         
+       
           {/* Card Component to Display Prompt */}
-          <Card className="mt-4 p-4">
+          <Card className="mt-4 p-2 bg-[#404040]" style={{backgroundColor:"#404040",color:"white" }}>
             <CardContent>
-              <Typography variant="h6" className="font-bold">Prompt:</Typography>
-              <Typography variant="body1" className="text-gray-700">{prompt || "No prompt available"}</Typography>
+              <Typography  className="font-bold" >Prompt:</Typography>
+              <Typography variant="body1" className="text-white ">{prompt || "No prompt available"}</Typography>
+            </CardContent>
+          </Card>
+ 
+          <Card className="mt-4 p-4 bg-[#404040]" style={{backgroundColor:"#404040",color:"white" }}>
+            <CardContent>
+              <Typography style={{fontSize:"20px"
+              }} >Circuit Explanation:</Typography>
+              <Typography variant="body1"  style={{fontSize:"15px"}} className="text-white text-sm ">{circuitdata.explanation || "No prompt available"}</Typography>
             </CardContent>
           </Card>
         </div>
