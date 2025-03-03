@@ -2,7 +2,7 @@ import { Handle, Position } from '@xyflow/react';
 
 import React from 'react';
 
-const Switch: React.FC= ( ) => {
+const Switch: React.FC= ({data}) => {
 return(
 
   <div style={{ position: "relative", width: 80, height: 80 }}>
@@ -31,16 +31,9 @@ return(
         c300,42.3,540.2-23.4,661.9-66.2c3.9-1.4,7.9,1.5,7.9,5.7V2940z"
   />
 </svg>
-
-
-
-
-
-
-
       {/* Positive Terminal Handle */}
       <Handle
-        type="source"
+        type={data.firsttype}
         position={Position.Left}
         id="positive"
         style={{ left: "98%", top: "115px", background: "red",width:"3px", height:"3px" }}
@@ -48,7 +41,7 @@ return(
 
       {/* Negative Terminal Handle */}
       <Handle
-        type="target"
+        type={data.secondtype}
         position={Position.Right}
         id="negative"
         style={{ left: "125%", top: "115px", background: "black" , width:"3px", height:"3px"}}

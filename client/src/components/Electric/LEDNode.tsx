@@ -50,15 +50,17 @@ let color:string=data.color || "red"
       
  
       {/* Positive Terminal (Top Wire) */}
+
+      
       <Handle
-        type="source"
+        type={data.firsttype}
         position={Position.Bottom}
         id="positive"
         style={{ left: "57%", bottom: "30%",backgroundColor:"red",width:"3px",height:"3px"}} // Adjust to match line 2
       />
       {/* Negative Terminal (Bottom Wire) */}
       <Handle
-        type="target"
+        type={data.secondtype}
         position={Position.Bottom}
         id="negative"
         style={{ left: "44%", bottom: "35%", backgroundColor:"black",width:"3px",height:"3px"}} // Adjust to match line 1

@@ -76,7 +76,8 @@ You are an AI circuit generator responsible for converting user-provided circuit
     - Transistors should only connect required terminals, leaving unnecessary ones unconnected.
     - Ensure **all components are correctly wired**, leaving none disconnected.
 ### **Example JSON Output**
-12 the source and target handle are always source or target so use only this according to the firstype and secondtype
+12 the source and target handle are always positive or negative (except transisitor) so use only this according to the firstype and secondtype
+so positve or negative terminal can be either source or target according to the circuit need
 json
 {
   "circuit_name": "Basic LED Circuit",

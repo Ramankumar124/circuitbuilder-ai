@@ -6,6 +6,10 @@ import {
   addEdge,
   MiniMap,
   Controls,
+  Background,
+  BackgroundVariant,
+  ReactFlowProvider,
+
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import { useAppSelector } from "./redux/hooks/store";
@@ -14,6 +18,7 @@ import { useAppSelector } from "./redux/hooks/store";
 import { useCircuitContext } from "./context/circuitContext";
 // Define custom node types
 import { nodeTypes } from "./properties/nodeTypes";
+import CustomControls from "./components/ui/reactFlowCustomControls";
 
 const FlowChart: React.FC = () => {
  const  {circuitData,setCircuitData,flowRef}=useCircuitContext()
@@ -26,6 +31,7 @@ const FlowChart: React.FC = () => {
   }, [edge,node])
   
 
+
   const [nodes,, onNodesChange] = useNodesState(node);
   const [edges, setEdges, onEdgesChange] = useEdgesState(edge);
 
@@ -35,7 +41,8 @@ const FlowChart: React.FC = () => {
   );
 
   return (
-    <div ref={flowRef} className="w-full h-full relative left-0">
+    <div ref={flowRef} className="w-full h-full relative rounded-4xl left-0 bg-white">
+      <ReactFlowProvider>
       <ReactFlow
         nodes={nodes}
         edges={edges}
@@ -46,10 +53,13 @@ const FlowChart: React.FC = () => {
         onConnect={onConnect}
         fitView
       >
-        <MiniMap />
+        <MiniMap  />
+        {/* <CustomControls/> */}
         <Controls />
+        <Background color="#2b2a2a" variant={BackgroundVariant.Dots} />
+
       </ReactFlow>
-    
+      </ReactFlowProvider>
     </div>
   );
 };

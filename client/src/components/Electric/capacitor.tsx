@@ -2,7 +2,7 @@ import React from 'react';
 import { Handle, Position } from '@xyflow/react';
 
 
-const Capacitor: React.FC = () => {
+const Capacitor: React.FC = ({data}) => {
   return (
     <>
     <svg width="100" height="100" viewBox="0 0 792 792">
@@ -31,8 +31,8 @@ const Capacitor: React.FC = () => {
       this is a capacitor
       </text>
     </svg>
-  <Handle  type='source' position={Position.Right} id='positive' style={{left:"48%" , top:"82%",  background:"red"}} />
-  <Handle  type='target' position={Position.Left} id='negative' style={{left:"41.5%" , top:"75%",  background:"black"}} />
+  <Handle  type={data.firsttype} position={Position.Right} id='positive' style={{left:"48%" , top:"82%",  background:"red"}} />
+  <Handle  type={data.secondtype} position={Position.Left} id='negative' style={{left:"41.5%" , top:"75%",  background:"black"}} />
     </>
   );
 };

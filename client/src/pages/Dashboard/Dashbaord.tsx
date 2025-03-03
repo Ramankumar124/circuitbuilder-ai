@@ -38,11 +38,13 @@ const ComponentDropdowns = () => {
   return (
     <div>
       {Object.keys(dropdownData).map((type) => (
-        <FormControl fullWidth key={type} style={{ marginBottom: "1rem" }}>
-          <InputLabel>{type.charAt(0).toUpperCase() + type.slice(1)}</InputLabel>
-          <Select value={selectedValues[type] || ""} onChange={handleChange(type)}>
+        <FormControl  fullWidth key={type} style={{ marginBottom: "1rem" }}>
+          <InputLabel style={{color:"white",backgroundColor:"#404040"}} >{
+        
+          type.charAt(0).toUpperCase() + type.slice(1)}</InputLabel>
+          <Select style={{color:"white",backgroundColor:"#404040"}} value={ selectedValues[type] || ""} onChange={handleChange(type)}>
             {[...dropdownData[type]].map((label, index) => (
-              <MenuItem key={index} value={label}>{label}</MenuItem>
+              <MenuItem style={{color:"black",backgroundColor:"white"}}  key={index} value={label}>{label}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -122,26 +124,31 @@ console.log("new circuit data",alldata);
     <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
       <nav className="text-white bg-gray-800 p-2">
         <div className="flex justify-between items-center p-4 bg-[#2e2e2e] dark:bg-gray-800">
-          <span className="font-bold text-white">My Projects</span>
+        <div className="flex items-center">
+          <a className="text-white font-bold text-2xl">
+            <span className="text-[#6E56CF]">Circuit</span>Builder
+            <span className="text-[#6E56CF]">AI</span>
+          </a>
+        </div>
           <div className="flex items-center gap-3">
             <button className="rounded-2xl bg-white text-black py-2 px-4">Share</button>
           </div>
         </div>
       </nav>
 
-      <div className="flex flex-grow h-[90%]">
-        <div id="left" className="w-[80%] h-full flex items-start justify-center m-0">
+      <div className="flex flex-grow h-full bg-black">
+        <div id="left" className="w-[20%] h-[95%] px-4 text-white bg-[#262626] m-[10px] rounded-2xl">
+          <h1 className="font-bold text-2xl py-4   text-start">Components</h1>
+        <ComponentDropdowns />
+        </div>
+        <div id="mid" className="w-[60%] h-[95%] flex items-start justify-center rounded-4xl  m-[20px]">
           <FlowChart />
         </div>
 
         <div className="w-1 bg-black "></div>
 
-        <div id="right" className="w-[20%] h-full p-4">
-          <div className="p-4 border border-gray-300 rounded-lg">
-            <h3 className="font-bold mb-2">Component Dropdowns</h3>
-            <ComponentDropdowns />
-          </div>
-
+        <div id="right" className="w-[20%] h-[95%] p-4 text-white bg-[#262626] m-[10px] rounded-2xl">
+         
           <div className="flex justify-center mt-4 gap-4">
             <Button variant="contained" className="bg-blue-500 hover:bg-blue-600 text-lg">
               Save

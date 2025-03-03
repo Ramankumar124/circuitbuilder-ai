@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import Logo from "../../Images/Logo.jpg"
 
-const LandingPage: React.FC = () => {
+const OldLandingPage: React.FC = () => {
   const aboutSectionRef = useRef(null);
   const scrollToAbout = () => {
     aboutSectionRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -71,4 +71,4 @@ const LandingPage: React.FC = () => {
   );
 };
 
-export default LandingPage;
+export default OldLandingPage;

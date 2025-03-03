@@ -3,7 +3,7 @@ import { Handle, Position } from '@xyflow/react';
 import React from 'react';
 
 
-const Buzzer: React.FC = () => {
+const Buzzer: React.FC = ({data}) => {
   return (<>
   <svg width="200" height="200" viewBox="100 100 800 800">
       <style>
@@ -22,8 +22,8 @@ const Buzzer: React.FC = () => {
       <line className="c" x1="459" y1="455.77" x2="459" y2="598" />
       <line className="c" x1="318" y1="455.77" x2="318" y2="547" />
     </svg>
-  <Handle  type='source' position={Position.Right} id='positive' style={{left:"42%" , top:"62%",  background:"red"}} />
-  <Handle  type='target' position={Position.Left} id='negative' style={{left:"27%" , top:"55%",  background:"black"}} />
+  <Handle  type={data.firsttype} position={Position.Right} id='positive' style={{left:"42%" , top:"62%",  background:"red"}} />
+  <Handle  type={data.secondtype} position={Position.Left} id='negative' style={{left:"27%" , top:"55%",  background:"black"}} />
   </>
 
   );

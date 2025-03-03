@@ -4,8 +4,8 @@ import Login from './pages/auth/Login'
 import Register from './pages/auth/register'
 import Dashboard from './pages/Dashboard/Dashbaord'
 import PromptPage from './pages/Main/PromptPage'
-import LandingPage from './pages/Main/Landing'
-import SavedProject from './pages/Main/SavedProject'
+import LandingPage from './pages/Main/Landingpage'
+import SavedProject from './pages/Main/SavedProject'  
 function App() {
 
 
@@ -21,6 +21,7 @@ function App() {
       <Route path='dashboard' element={<Dashboard />} />
       <Route path='home' element={<PromptPage />} />
       <Route path='myProjects'  element={<SavedProject/>}/>
+ 
     </Routes>
 
     </Router>

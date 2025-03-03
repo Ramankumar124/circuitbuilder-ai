@@ -2,7 +2,7 @@ import { Handle, Position } from '@xyflow/react';
 
 import React from 'react';
 
-const Inductor: React.FC= ( ) => {
+const Inductor: React.FC= ({data} ) => {
 return(
 
   <div style={{ position: "relative", width: 80, height: 80 }}>
@@ -46,7 +46,7 @@ return(
 
       {/* Positive Terminal Handle */}
       <Handle
-        type="source"
+        type={data.firsttype}
         position={Position.Top}
         id="positive"
         style={{ left: "79.4%", top: "130px", background: "red",width:"3px", height:"3px" }}
@@ -54,7 +54,7 @@ return(
 
       {/* Negative Terminal Handle */}
       <Handle
-        type="target"
+        type={data.secondtype}
         position={Position.Top}
         id="negative"
         style={{ left: "171%", top: "130px", background: "black" , width:"3px", height:"3px"}}

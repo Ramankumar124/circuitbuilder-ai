@@ -52,8 +52,8 @@ const  {firstBand,secondBand,thirdBand,fourthBand,fifthBand}=data;
         <line className="rs6" x1="199.47" y1="395.69" x2="81.17" y2="395.69" />
       </svg>
 
-      <Handle type="source" position={Position.Left} id="positive" style={{position:"absolute", left: "10px", top: "50%", background: "red", width: "3px", height: "3px"}} />
-      <Handle type="target" position={Position.Right} id="negative" style={{position:"absolute",right: "10px", top: "50%", background: "black", width: "3px", height: "3px"}}/>
+      <Handle type={data.firsttype} position={Position.Left} id="positive" style={{position:"absolute", left: "10px", top: "50%", background: "red", width: "3px", height: "3px"}} />
+      <Handle type={data.secondtype} position={Position.Right} id="negative" style={{position:"absolute",right: "10px", top: "50%", background: "black", width: "3px", height: "3px"}}/>
     </div>
   );
 };

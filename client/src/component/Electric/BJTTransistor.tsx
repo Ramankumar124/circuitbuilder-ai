@@ -20,7 +20,7 @@ const TransistorNode: React.FC<NodeProps<TransistorNodeProps>> = ({ data }) => {
         xmlns="http://www.w3.org/2000/svg"
         xmlnsXlink="http://www.w3.org/1999/xlink"
         viewBox="0 0 792 792"
-        style={{ width: "100%", height: "100%" }}
+        style={{ width: "100%", height: "100%",scale:"50%" }}
       >
         <style type="text/css">
           {`
@@ -43,22 +43,22 @@ const TransistorNode: React.FC<NodeProps<TransistorNodeProps>> = ({ data }) => {
 
       {/* Handles for Collector, Base, and Emitter */}  
       <Handle
-        type="target"
-        position={Position.Left}
-        id={data.first}
+           type={data.first.type}
+           position={Position.Left}
+           id={data.first.pintype}
         style={{ left: "44.5%",top: "63%" }}
        
       />
       <Handle
-        type="target"
-        position={Position.Bottom}
-        id={data.second}
+       type={data.second.type}
+      position={Position.Bottom}
+      id={data.second.pintype}
         style={{ top: "67%",left:"50%"}}
       />
       <Handle
-        type="source"
+        type={data.third.type}
         position={Position.Right}
-        id={data.third}
+        id={data.third.pintype}
         style={{ top: "63%",right:"44.5%"}}
        
       />

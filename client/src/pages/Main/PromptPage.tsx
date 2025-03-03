@@ -1,12 +1,20 @@
-import { useState } from "react";
-import { createCiruit } from "../../apiService/api";
+import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
-import { AxiosError } from "axios";
-import { useAppDispatch } from "../../redux/hooks/store";
+import { FaMicrophone } from "react-icons/fa";
 import { setCircuit } from "../../redux/features/circuitSlice";
+import { createCiruit } from "../../apiService/api";
+import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
+import { useAppDispatch } from "../../redux/hooks/store";
 import { Spinner } from "../../Spinner";
-
+import { RxHamburgerMenu } from "react-icons/rx";
+import { LiaHamburgerSolid } from "react-icons/lia";
+declare global {
+  interface Window {
+    SpeechRecognition: any;
+    webkitSpeechRecognition: any;
+  }
+}
 interface CircuitResponse {
   message: string;
   data: {
@@ -19,6 +27,51 @@ interface CircuitResponse {
 }
 
 export default function PromptPage() {
+  const [isListening, setIsListening] = useState(false);
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+
+  useEffect(() => {
+    const SpeechRecognition =
+      window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (SpeechRecognition) {
+      const rec = new SpeechRecognition();
+      rec.continuous = true;
+      rec.interimResults = true;
+      rec.lang = "en-US";
+
+      rec.onresult = (event: SpeechRecognitionEvent) => {
+        let transcript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        console.log(transcript);
+        
+        setPrompt(transcript);
+      };
+
+      rec.onend = () => {
+        setIsListening(false);
+      };
+
+      setRecognition(rec);
+    } else {
+      console.error("Speech Recognition API is not supported in this browser.");
+    }
+  }, []);
+
+  const toggleListening = () => {
+    if (!recognition) return;
+    if (isListening) {
+      recognition.stop();
+    } else {
+      recognition.start();
+    }
+    setIsListening(!isListening);
+  };
+
+
+
   const [prompt, setPrompt] = useState("");
   const [isloading, setisloading] = useState<boolean>(false)
   const dispatch = useAppDispatch();
@@ -45,7 +98,8 @@ export default function PromptPage() {
       const response = await createCiruit(payload) as { data: CircuitResponse };
   
       let rawData = response?.data?.data;
-  
+    
+    
       // Ensure rawData is a string before calling replace()
       if (typeof rawData !== "string") {
         console.error("API returned unexpected format:", rawData);
@@ -84,27 +138,34 @@ export default function PromptPage() {
       setisloading(false)
     }
   };
-  
-  
-
   return (
-  <>
-  {isloading && <Spinner />}
-   <div className="bg-black text-white min-h-screen">
-      {/* Navbar */}
-      <div className="flex justify-between items-center p-4 bg-[#1e1e1e]">
-        <span className="font-bold text-white">My Projects</span>
-      </div>
+    <div>
+        {isloading && <Spinner />}
+      <nav id="header" className="fixed w-full z-50 bg-[#191919]">
+        <div className="container mx-auto px-4 py-3 flex justify-between items-center ">
+          <div className="flex items-center text-5xl text-[#899598] -ml-10">
+          {/* <LiaHamburgerSolid /> */}
+          <RxHamburgerMenu />
+          </div>
+        </div>
+      </nav>
 
-      {/* Grid Section */}
-      <div className="gap-2 p-5 ml-138 items-center mt-30">
+      <div className="min-h-screen bg-[#191919] text-white flex flex-col items-center justify-center p-4  overflow-hidden">
+        {/* Buttons */}
+        <div className="flex items-center">
+          <a className="text-white font-bold text-6xl">
+            <span className="text-[#6E56CF]">Circuit</span>Builder
+            <span className="text-[#6E56CF]">AI</span>
+          </a>
+        </div>
+        <div className="gap-2 p-5 justify-center items-center mt-30">
         <div className="grid grid-cols-2 md:grid-cols-3 w-300 gap-5">
-          {["Create a circuit with 10 LEDs and a battery", "create a circuit in which a buzzer is connected with battery", "Basic motor driver", "Light sensor with buzzer","create a circuit consit of inductor ,cpacitor and batetry"].map(
+          {["Create a circuit with 10 LEDs and a battery", "create a circuit in which a buzzer is connected with battery", "Basic motor driver", "Light sensor with buzzer","create a circuit consit of inductor ,cpacitor and batetry","some project with some output"].map(
             (text, index) => (
               <div
                 key={index}
                 onClick={addToPrompt}
-                className="bg-[#007bff] text-white p-2 rounded-md cursor-pointer hover:bg-[#0056b3]"
+                className="bg-[#262626] text-white p-2 rounded-lg cursor-pointer hover:bg-[#252526]"
               >
                 {text}
               </div>
@@ -113,26 +174,42 @@ export default function PromptPage() {
         </div>
       </div>
 
-      {/* Footer Section */}
-      <div className="p-6 pb-3 mt-20  w-200 mx-auto bg-[#2e2e2e] rounded-md">
-        <textarea
-          value={prompt}
-          onChange={handleChange}
-          placeholder="Enter your circuit prompt..."
-          className="w-full p-2 bg-gray-700 text-white border border-gray-500 rounded-md"
-        ></textarea>
-        <div className="flex justify-between mt-4">
-          <button
+        {/* Input Box */}
+        <div className="p-6 pb-3 mt-16 w-300 mx-auto bg-[#242424] rounded-xl">
+          <div className="flex items-center">
+            <textarea
+              value={prompt}
+              onChange={handleChange}
+              placeholder="Enter your circuit prompt..."
+              className="w-full p-2 bg-[#242424] text-white border-none focus:outline-none rounded-md resize-none overflow-hidden scrollbar-hide"
+            ></textarea>
+
+            {/* Microphone Button */}
+            <button
+              onClick={toggleListening}
+              className={`ml-3 p-3 text-white rounded-full ${
+                isListening ? "bg-red-500" : "bg-blue-500"
+              }`}
+              title={isListening ? "Stop Listening" : "Start Listening"}
+            >
+              <FaMicrophone className="text-xl" />
+            </button>
+          </div>
+
+          <div className="flex justify-between mt-4">
+          <button className="h-10 w-auto px-2 bg-white text-black text-sm rounded-md cursor-pointer">
+              Enhance Prompt
+            </button>
+            <button 
             className="h-10 w-24 bg-white text-black rounded-md cursor-pointer"
             onClick={() => handleApi()}
             disabled = {isloading}
-          >
-            Generate
-          </button>
+            >
+              Generate
+            </button>
+          </div>
         </div>
       </div>
     </div>
-  </>
-   
   );
 }
