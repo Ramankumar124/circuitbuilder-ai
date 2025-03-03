@@ -7,8 +7,8 @@ import { AxiosError } from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAppDispatch } from "../../redux/hooks/store";
 import { Spinner } from "../../Spinner";
-import { RxHamburgerMenu } from "react-icons/rx";
 import { LiaHamburgerSolid } from "react-icons/lia";
+import { enhancePrompt } from "../../apiService/api";
 declare global {
   interface Window {
     SpeechRecognition: any;
@@ -28,7 +28,9 @@ interface CircuitResponse {
 
 export default function PromptPage() {
   const [isListening, setIsListening] = useState(false);
-  const [recognition, setRecognition] = useState<SpeechRecognition | null>(null);
+  const [recognition, setRecognition] = useState<SpeechRecognition | null>(
+    null
+  );
 
   useEffect(() => {
     const SpeechRecognition =
@@ -46,7 +48,7 @@ export default function PromptPage() {
           transcript += event.results[i][0].transcript;
         }
         console.log(transcript);
-        
+
         setPrompt(transcript);
       };
 
@@ -70,10 +72,8 @@ export default function PromptPage() {
     setIsListening(!isListening);
   };
 
-
-
   const [prompt, setPrompt] = useState("");
-  const [isloading, setisloading] = useState<boolean>(false)
+  const [isloading, setisloading] = useState<boolean>(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -90,29 +90,30 @@ export default function PromptPage() {
       toast.error("Prompt cannot be empty!");
       return;
     }
-  
+
     try {
-      setisloading(true)
+      setisloading(true);
       const payload = { prompt };
-  
-      const response = await createCiruit(payload) as { data: CircuitResponse };
-  
+
+      const response = (await createCiruit(payload)) as {
+        data: CircuitResponse;
+      };
+
       let rawData = response?.data?.data;
-    
-    
+
       // Ensure rawData is a string before calling replace()
       if (typeof rawData !== "string") {
         console.error("API returned unexpected format:", rawData);
         toast.error("Invalid API response format");
         return;
       }
-  
+
       // **Fix Regex to Remove Markdown Artifacts**
       const cleanedResponse = rawData.replace(/```json|```/g, "").trim();
-  
+
       // **Parse the cleaned JSON string**
       const parsedData = JSON.parse(cleanedResponse);
-  
+
       if (parsedData) {
         dispatch(
           setCircuit({
@@ -124,8 +125,8 @@ export default function PromptPage() {
             circuitName: parsedData.circuit_name || "", // Extract circuit name
           })
         );
-        navigate("/dashboard")
-        } else {
+        navigate("/dashboard");
+      } else {
         toast.error("Failed to parse circuit data");
       }
     } catch (error) {
@@ -134,18 +135,34 @@ export default function PromptPage() {
       } else {
         toast.error("An unexpected error occurred");
       }
-    }finally {
+    } finally {
+      setisloading(false);
+    }
+  };
+
+  const handleEnhancePrompt = async () => {
+    setisloading(true);
+    try {
+      const payload = {
+        prompt,
+      };
+      const response = await enhancePrompt(payload) as {data: {data: string}};
+      setPrompt(response?.data?.data);
+    } catch (error) {
+      toast.error(`${error}`, { duration: 5000 });
+    } finally {
       setisloading(false)
     }
   };
+
   return (
     <div>
-        {isloading && <Spinner />}
+      {isloading && <Spinner />}
       <nav id="header" className="fixed w-full z-50 bg-[#191919]">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center ">
           <div className="flex items-center text-5xl text-[#899598] -ml-10">
-          <LiaHamburgerSolid />
-          {/* <RxHamburgerMenu /> */}
+            <LiaHamburgerSolid />
+            {/* <RxHamburgerMenu /> */}
           </div>
         </div>
       </nav>
@@ -159,9 +176,15 @@ export default function PromptPage() {
           </a>
         </div>
         <div className="gap-2 p-5 justify-center items-center mt-30">
-        <div className="grid grid-cols-2 md:grid-cols-3 w-300 gap-5">
-          {["Create a circuit with 10 LEDs and a battery", "create a circuit in which a buzzer is connected with battery", "Basic motor driver", "Light sensor with buzzer","create a circuit consit of inductor ,cpacitor and batetry","some project with some output"].map(
-            (text, index) => (
+          <div className="grid grid-cols-2 md:grid-cols-3 w-300 gap-5">
+            {[
+              "Create a circuit with 10 LEDs and a battery",
+              "create a circuit in which a buzzer is connected with battery",
+              "Basic motor driver",
+              "Light sensor with buzzer",
+              "create a circuit consit of inductor ,cpacitor and batetry",
+              "some project with some output",
+            ].map((text, index) => (
               <div
                 key={index}
                 onClick={addToPrompt}
@@ -169,10 +192,9 @@ export default function PromptPage() {
               >
                 {text}
               </div>
-            )
-          )}
+            ))}
+          </div>
         </div>
-      </div>
 
         {/* Input Box */}
         <div className="p-6 pb-3 mt-16 w-300 mx-auto bg-[#242424] rounded-xl">
@@ -197,13 +219,16 @@ export default function PromptPage() {
           </div>
 
           <div className="flex justify-between mt-4">
-          <button className="h-10 w-auto px-2 bg-white text-black text-sm rounded-md cursor-pointer">
+            <button
+              className="h-10 w-auto px-2 bg-white text-black text-sm rounded-md cursor-pointer"
+              onClick={() => handleEnhancePrompt()}
+            >
               Enhance Prompt
             </button>
-            <button 
-            className="h-10 w-24 bg-white text-black rounded-md cursor-pointer"
-            onClick={() => handleApi()}
-            disabled = {isloading}
+            <button
+              className="h-10 w-24 bg-white text-black rounded-md cursor-pointer"
+              onClick={() => handleApi()}
+              disabled={isloading}
             >
               Generate
             </button>

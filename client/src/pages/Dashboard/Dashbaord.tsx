@@ -5,6 +5,8 @@ import { useCircuitContext } from "../../context/circuitContext";
 import { useAppSelector } from "../../redux/hooks/store";
 import { toJpeg, toPng, toSvg } from "html-to-image";
 import jsPDF from "jspdf";
+import { saveProject } from "../../apiService/api";
+import ProjectDialog from "../../component/DialogBox";
 
 const getDropdownData = (nodes:object) => {
   const dropdownData = {};
@@ -56,6 +58,7 @@ const ComponentDropdowns = () => {
 const Dashboard = () => {
    const  {flowRef}=useCircuitContext()
     const reactFlowInstance = useRef(null);
+    const [isDialogOpen, setisDialogOpen] = useState<boolean>(false)
   
   const prompt = useAppSelector((state) => state?.circuit?.prompt); // Get the prompt from Redux store
 const circuitdata=  useAppSelector((state) => state?.circuit);
@@ -118,6 +121,10 @@ const [exportMethod, setExportMethod] = useState("");
     }
   }, []);
 
+  const handleDialog = () => {
+   setisDialogOpen(false) 
+  }
+ 
 
   return (
     <div className="w-full h-screen flex flex-grow flex-col overflow-hidden">
@@ -140,7 +147,7 @@ const [exportMethod, setExportMethod] = useState("");
           <h1 className="font-bold text-2xl py-4   text-start">Components</h1>
         <ComponentDropdowns />
         <div className="flex justify-center mt-4 gap-4">
-            <Button variant="contained" className="bg-blue-500 hover:bg-blue-600 text-lg">
+            <Button variant="contained" className="bg-blue-500 hover:bg-blue-600 text-lg" onClick={() => setisDialogOpen(true)}>
               Save
             </Button>
                    <FormControl fullWidth style={{ width: "150px",backgroundColor:"#404040",color:"white" ,border:"2px"}}>
@@ -192,6 +199,11 @@ const [exportMethod, setExportMethod] = useState("");
           </Card>
         </div>
       </div>
+      <ProjectDialog 
+      onClose={handleDialog}
+      open={isDialogOpen}
+      />
+      
     </div>
   );
 };

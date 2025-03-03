@@ -19,6 +19,13 @@ interface shareReq {
   circuitId: string
 }
 
+interface saveProject {
+  projectName: string, 
+  prompt: string, 
+  circuit: object, 
+  userId: string
+}
+
 
 
 
@@ -38,3 +45,10 @@ export function generateSharelink(data: shareReq) {
   return http.post("/share", data)
 }
 
+export function saveProject(data: saveProject) {
+  return http.post("/save-circuit", data);
+}
+
+export function enhancePrompt(data: circuitReq) {
+  return http.post("/enhance-prompt", data);
+}
