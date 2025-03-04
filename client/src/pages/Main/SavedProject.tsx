@@ -24,8 +24,9 @@ function SavedProject() {
          <nav id="header" className=" w-full z-50 bg-[#191919]">
              <div className="container mx-auto px-4 py-3 flex justify-between items-center ">
                <div className="flex items-center text-5xl text-[#899598] -ml-10">
-               <LiaHamburgerSolid />
+               {/* <LiaHamburgerSolid /> */}
                {/* <RxHamburgerMenu /> */}
+               <a className='text-white text-bold' href="/home">Home</a>
                </div>
 
                <h1 className='text-white text-3xl font-bold'>My Projects</h1>

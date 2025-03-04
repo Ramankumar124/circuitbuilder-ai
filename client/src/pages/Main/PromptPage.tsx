@@ -161,8 +161,9 @@ export default function PromptPage() {
       <nav id="header" className="fixed w-full z-50 bg-[#191919]">
         <div className="container mx-auto px-4 py-3 flex justify-between items-center ">
           <div className="flex items-center text-bold text-xl text-[#899598] -ml-10">
-            <a href="/myprojects" className="text-bold">My Projects  </a>
+            <a href="/myprojects" className="text-bold text-white"><span className="text-blue-700">My</span> Projects  </a>
             {/* <RxHamburgerMenu /> */}
+
           </div>
         </div>
       </nav>
@@ -180,10 +181,10 @@ export default function PromptPage() {
             {[
               "Create a circuit with 10 LEDs and a battery",
               "create a circuit in which a buzzer is connected with battery",
-              "Basic motor driver",
-              "Light sensor with buzzer",
-              "create a circuit consit of inductor ,cpacitor and batetry",
-              "some project with some output",
+              "Create a Circuit in which Led is blinking in Every Second",
+              "a circuit which Uses A diode to show flow of electricity",
+              "create a LEd matrix using 9 leds ",
+              "Buzzer beeping after every 1 second",
             ].map((text, index) => (
               <div
                 key={index}
