@@ -1,8 +1,24 @@
 
 import Avatar from '@mui/material/Avatar';
 import { LiaHamburgerSolid } from 'react-icons/lia';
+import { getAllProject } from '../../apiService/api';
+import { useEffect } from 'react';
+import { useAppSelector } from '../../redux/hooks/store';
 
 function SavedProject() {
+  const id = useAppSelector((state) => state?.auth?.user?.id)
+  const getAllProjects = async() => {
+    try {
+      const response = await getAllProject(id);
+      console.log("response", response);
+    } catch (error) {
+      console.log("error", error);
+    }
+  }
+  useEffect(() => {
+    getAllProjects();
+  }, [])
+  
   return (
     <div className="w-full h-screen bg-[#282626]">
          <nav id="header" className=" w-full z-50 bg-[#191919]">

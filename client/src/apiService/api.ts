@@ -52,3 +52,7 @@ export function saveProject(data: saveProject) {
 export function enhancePrompt(data: circuitReq) {
   return http.post("/enhance-prompt", data);
 }
+
+export function getAllProject(id: string) {
+  http.get(`/projects/${id}?page=1&limit=5`)
+}

@@ -3,5 +3,5 @@ import { Router } from "express";
 
 export const projectRoute = Router();
 projectRoute.post("/project", createProject);
-projectRoute.get("/projects", getAllProjects);
+projectRoute.get("/projects/:id", getAllProjects);
 projectRoute.put("/project/:id", updateProject);
