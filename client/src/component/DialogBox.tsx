@@ -5,6 +5,7 @@ import { saveProject } from "../apiService/api";
 import { useAppSelector } from "../redux/hooks/store";
 import { useCircuitContext } from "../context/circuitContext";
 import toast from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
 
 interface ProjectDialogProps {
   open: boolean;
@@ -21,10 +22,12 @@ const ProjectDialog: React.FC<ProjectDialogProps> = ({ open, onClose }) => {
     try {
       const payload = {circuit: circuit?.circuitData, projectName, prompt, userId}
       const response = await saveProject(payload) as {data: {message: string, data: object}};
-      toast.success(`${response?.data?.message}`, {duration: 5000})
+      // toast.success(`${response?.data?.message}`, {duration: 5000})
+      alert(`${response?.data?.message}`)
       onClose();
     } catch (error) {
       toast.error(`${error}`, {duration: 5000});
+      console.log("error", error)
     }
   }
 
