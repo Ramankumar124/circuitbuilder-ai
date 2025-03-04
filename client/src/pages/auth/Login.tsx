@@ -8,7 +8,7 @@ import { setToken } from "../../redux/features/authSlice.js";
 import toast from 'react-hot-toast';
 import { AxiosError } from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Spinner } from '../../Spinner';
 import { Link } from 'react-router-dom';
 
@@ -62,6 +62,16 @@ export default function Login() {
     }
   };
 
+  useEffect(() => {
+ 
+    const token =localStorage.getItem("token");
+    
+    if(token){
+      navigate("/home")
+    }
+  
+  }, [])
+  
   return (
     <>
     {isloading && <Spinner />}

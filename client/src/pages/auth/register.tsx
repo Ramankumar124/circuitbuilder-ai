@@ -73,6 +73,16 @@ export default function Register() {
     }
  };
 
+ useEffect(() => {
+  
+     const token =localStorage.getItem("token");
+     
+     if(token){
+       navigate("/home")
+     }
+   
+   }, [])
+
   return (
     <>
     {isloading && <Spinner />}

@@ -158,13 +158,13 @@ const LandingPage = () => {
                   Builder
                 </h1>
                 <p className="text-neutral-300 text-lg md:text-xl mb-8">
-                  Design, simulate, and analyze electrical circuits with the
+                  Design, and analyze electrical circuits with the
                   power of artificial intelligence. Build complex systems with
-                  intuitive controls and real-time feedback.
+                  intuitive controls.
                 </p>
                 <div className="flex flex-wrap gap-4">
                   <a
-                    href="#editor"
+                    href="/login"
                     className="px-8 py-3 bg-[#6E56CF] hover:bg-[#7d66dc] text-white font-medium rounded-full transition-all duration-300 shadow-lg hover:shadow-[#6E56CF]/40 hover:scale-105"
                   >
                     Try Editor Now
@@ -263,13 +263,13 @@ const LandingPage = () => {
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16 text-center">
               <div className="bg-neutral-800 bg-opacity-40 backdrop-blur-sm p-4 rounded-xl border border-neutral-700">
                 <div className="text-3xl font-bold text-[#6E56CF] mb-1">
-                  10,000+
+                  All Basics
                 </div>
                 <div className="text-neutral-400">Components</div>
               </div>
               <div className="bg-neutral-800 bg-opacity-40 backdrop-blur-sm p-4 rounded-xl border border-neutral-700">
                 <div className="text-3xl font-bold text-[#6E56CF] mb-1">
-                  99.9%
+                  75%
                 </div>
                 <div className="text-neutral-400">Accuracy</div>
               </div>
@@ -394,8 +394,7 @@ const LandingPage = () => {
                   Intuitive Design Interface
                 </h3>
                 <p className="text-neutral-400 mb-4">
-                  Drag-and-drop components with smart snapping and auto-routing
-                  to build complex circuits with minimal effort.
+               Easy to Use AI tool 
                 </p>
                 <ul className="space-y-2 text-neutral-300">
                   <li className="flex items-center">
@@ -466,8 +465,8 @@ const LandingPage = () => {
                   Multi-format Export
                 </h3>
                 <p className="text-neutral-400 mb-4">
-                  Export your designs in multiple industry-standard formats with
-                  a single click, ready for manufacturing or further analysis.
+                  Export your designs in multiple document formats with
+                  a single click
                 </p>
                 <ul className="space-y-2 text-neutral-300">
                   <li className="flex items-center">
@@ -483,7 +482,7 @@ const LandingPage = () => {
                         clipRule="evenodd"
                       ></path>
                     </svg>
-                    PCB layout generation
+                    SVG
                   </li>
                   <li className="flex items-center">
                     <svg
@@ -498,7 +497,7 @@ const LandingPage = () => {
                         clipRule="evenodd"
                       ></path>
                     </svg>
-                    Component bill of materials
+                     PDF
                   </li>
                   <li className="flex items-center">
                     <svg
@@ -513,7 +512,7 @@ const LandingPage = () => {
                         clipRule="evenodd"
                       ></path>
                     </svg>
-                    SPICE simulation files
+                    JPEG & PNG
                   </li>
                 </ul>
               </div>

@@ -131,7 +131,7 @@ const [exportMethod, setExportMethod] = useState("");
       <nav className="text-white bg-[#282626] p-2">
         <div className="flex justify-between items-center p-4 bg-[#282626] ">
         <div className="flex items-center">
-          <a className="text-white font-bold text-2xl">
+          <a href="/home" className="text-white font-bold text-2xl">
             <span className="text-[#6E56CF]">Circuit</span>Builder
             <span className="text-[#6E56CF]">AI</span>
           </a>
