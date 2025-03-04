@@ -58,10 +58,12 @@ export const saveProjectCircuit = async(req, res) => {
         const {projectName, prompt, circuit, userId} = req.body
 
        const project = new Project({projectName, userId});
-        await Project.save()
+        await project.save()
 
-        new Circuit({prompt, circuit, projectId: project?._id})
-        return res.status(200).send({message: "Project created successfully"});
+        const newCircuit = new Circuit({prompt, circuit, projectId: project?._id});
+        await newCircuit.save()
+        const payload = {...project, ...newCircuit, circuitId: newCircuit?._id, projectId: project?._id};
+        return res.status(200).send({message: "Project created successfully", data: payload});
     } catch (error) {
         handleError(error, res);
     }
